@@ -1,10 +1,13 @@
 #include "../include/raylib.h"
+#include "../include/floor.h"
 
 int main(void){
 
     InitWindow( 800, 350, "test telça");
     DisableCursor();
     SetTargetFPS(60);
+
+    Floor mainFloor = createFloor(0, 400, 800, 50, DARKGRAY);
 
     Camera3D camera = { 0 }; 
     camera.position = (Vector3){ 0.0f, 1.7f, 5.0f};
@@ -20,7 +23,9 @@ int main(void){
         BeginDrawing();
             ClearBackground(BLACK);
             BeginMode3D(camera);
-                DrawPlane((Vector3){0, 0, 0}, (Vector2){30,30}, DARKGRAY);
+
+                drawFloor(mainFloor);
+
                 DrawCube((Vector3){ -4, 1, 0}, 2, 2, 2, RED);
                 DrawCubeWires((Vector3){ -4, 1, 0}, 2, 2, 2, GREEN);
                 DrawSphere((Vector3){0, 1, -6}, 1.0f, GREEN);
