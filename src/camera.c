@@ -3,6 +3,7 @@
 void createCamera(gameCamera *GC, Vector3 position, Vector3 target, Vector3 up){
     int fovy = 45.0f;
     int projection = CAMERA_PERSPECTIVE;
+    int mode = CAMERA_FIRST_PERSON;
 
     GC->camera.position = position;
     GC->camera.target = target;
@@ -10,6 +11,9 @@ void createCamera(gameCamera *GC, Vector3 position, Vector3 target, Vector3 up){
 
     GC->camera.fovy = fovy;
     GC->camera.projection = projection;
+
+
+    GC->cameraMode = mode;
 
 }
 
