@@ -1,16 +1,18 @@
 #ifndef CHAO_H
 #define CHAO_H
 
-#include "raylib.h"
+#include "../include/raylib.h"
 
 typedef struct {
-    Rectangle rectangle;
+    Vector3 center;
+    Vector2 size; 
     Color color;
     /* data */
 } Floor;
 
-Floor createFloor(float x, float y, float width, float height, Color color);
-void drawFloor(Floor floor)
+
+Floor createFloor(float centerX, float centerY, float centerZ, float sizeX, float sizeY, Color color);
+void drawFloor(Floor floor);
 
 
 #endif

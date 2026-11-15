@@ -7,7 +7,7 @@ int main(void){
     DisableCursor();
     SetTargetFPS(60);
 
-    Floor mainFloor = createFloor(0, 400, 800, 50, DARKGRAY);
+    Floor mainFloor = createFloor(0.0f, 0.0f, 0.0f, 10.0f, 10.0f, DARKGRAY);
 
     Camera3D camera = { 0 }; 
     camera.position = (Vector3){ 0.0f, 1.7f, 5.0f};
@@ -23,9 +23,8 @@ int main(void){
         BeginDrawing();
             ClearBackground(BLACK);
             BeginMode3D(camera);
-
                 drawFloor(mainFloor);
-
+                //DrawPlane((Vector3){0, 0, 0}, (Vector2){30,30}, DARKGRAY);
                 DrawCube((Vector3){ -4, 1, 0}, 2, 2, 2, RED);
                 DrawCubeWires((Vector3){ -4, 1, 0}, 2, 2, 2, GREEN);
                 DrawSphere((Vector3){0, 1, -6}, 1.0f, GREEN);
