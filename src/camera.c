@@ -10,4 +10,9 @@ void createCamera(gameCamera *GC, Vector3 position, Vector3 target, Vector3 up){
 
     GC->camera.fovy = fovy;
     GC->camera.projection = projection;
+
+}
+
+void updateCamera(gameCamera *UCG){
+    UpdateCamera(&UCG->camera, UCG->cameraMode);
 }
