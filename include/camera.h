@@ -5,9 +5,9 @@
 
 typedef struct{
     Camera3D camera;
-    int mode;
+    int cameraMode;
 } gameCamera;
 
 void createCamera(gameCamera *GC, Vector3 position, Vector3 target, Vector3 up);
-
+void updateCamera(gameCamera *UGC);
 #endif
