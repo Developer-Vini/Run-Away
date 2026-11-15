@@ -1,13 +1,13 @@
 #include "../include/camera.h"
 
-void createCamera(gameCamera *GC, Vector3 position, Vector3 target, Vector3 up){
+void createCamera(GameCamera *GC, Vector3 position, Vector3 target){
     int fovy = 45.0f;
     int projection = CAMERA_PERSPECTIVE;
     int mode = CAMERA_FIRST_PERSON;
 
     GC->camera.position = position;
     GC->camera.target = target;
-    GC->camera.up = up;
+    GC->camera.up = (Vector3){0.0f, 1.0f, 0.0f};
 
     GC->camera.fovy = fovy;
     GC->camera.projection = projection;
@@ -17,11 +17,11 @@ void createCamera(gameCamera *GC, Vector3 position, Vector3 target, Vector3 up){
 
 }
 
-void updateCamera(gameCamera *UCG){
+void updateCamera(GameCamera *UCG){
     UpdateCamera(&UCG->camera, UCG->cameraMode);
 }
 
-void initCamera(gameCamera *IGC){
+void initCamera(GameCamera *IGC){
     BeginMode3D(IGC->camera);
 }
 
