@@ -20,3 +20,11 @@ void createCamera(gameCamera *GC, Vector3 position, Vector3 target, Vector3 up){
 void updateCamera(gameCamera *UCG){
     UpdateCamera(&UCG->camera, UCG->cameraMode);
 }
+
+void initCamera(gameCamera *IGC){
+    BeginMode3D(IGC->camera);
+}
+
+void finishCamera(void){
+    EndMode3D();
+}

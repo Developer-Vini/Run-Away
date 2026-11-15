@@ -10,4 +10,6 @@ typedef struct{
 
 void createCamera(gameCamera *GC, Vector3 position, Vector3 target, Vector3 up);
 void updateCamera(gameCamera *UGC);
+void initCamera(gameCamera *IGC);
+void finishCamera(void);
 #endif
