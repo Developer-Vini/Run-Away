@@ -11,5 +11,6 @@ typedef struct {
 } Chunk;
 
 Chunk createChunk(int chunkX, int chunkZ);
+void drawChunk(const Chunk *chunk);
 
 #endif
