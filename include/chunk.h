@@ -13,5 +13,6 @@ typedef struct {
 Chunk createChunk(int chunkX, int chunkZ);
 void drawChunk(const Chunk *chunk);
 void generateChunkTerrain(Chunk *chunk);
+float getTerrainH(float worldX, float worldZ);
 
 #endif

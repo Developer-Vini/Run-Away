@@ -14,7 +14,8 @@ int main(void){
     createCamera(&camera, (Vector3){0.0f, 1.7f, 5.0f}, (Vector3){0.0f, 1.7f, 0.0f});
 
     Chunk chunk = createChunk(0, 0);
-    
+    Chunk chunk2 = createChunk(1, 0);
+
     while(!WindowShouldClose()){
         
         updateCamera(&camera);
@@ -24,6 +25,7 @@ int main(void){
             initCamera(&camera);
                 drawFloor(mainFloor);
                 drawChunk(&chunk);
+                drawChunk(&chunk2);
                 //DrawPlane((Vector3){0, 0, 0}, (Vector2){30,30}, DARKGRAY);
                 DrawCube((Vector3){ -4, 1, 0}, 2, 2, 2, RED);
                 DrawCubeWires((Vector3){ -4, 1, 0}, 2, 2, 2, GREEN);
