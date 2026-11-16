@@ -1,4 +1,5 @@
 #include "../include/camera.h"
+#include "../include/chunk.h"
 
 void createCamera(GameCamera *GC, Vector3 position, Vector3 target){
     int fovy = 45.0f;
@@ -27,4 +28,13 @@ void initCamera(GameCamera *IGC){
 
 void finishCamera(void){
     EndMode3D();
+}
+
+void snapCameraToGround(GameCamera *GC, float eyeH){
+    float groundH = getTerrainH(GC->camera.position.x, GC->camera.position.z);
+    float newY = groundH + eyeH;
+
+    float diference = newY - GC->camera.position.y;
+    GC->camera.position.y += diference;
+    GC->camera.target.y += diference;
 }
