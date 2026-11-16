@@ -10,5 +10,6 @@ typedef struct {
     
 } Chunk;
 
+Chunk createChunk(int chunkX, int chunkZ);
 
 #endif
