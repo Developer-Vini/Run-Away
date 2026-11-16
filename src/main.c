@@ -54,22 +54,21 @@ int main(void){
     GameCamera camera;
     createCamera(&camera, (Vector3){0.0f, 1.7f, 5.0f}, (Vector3){0.0f, 1.7f, 0.0f});
 
-    Chunk chunk = createChunk(0, 0);
-    Chunk chunk2 = createChunk(1, 0);
-    Chunk chunk3 = createChunk(2, 0);
+
     while(!WindowShouldClose()){
         
         updateCamera(&camera);
+        snapCameraToGround(&camera, 1.7f);
         updateChunks(camera.camera.position);
         BeginDrawing();
             ClearBackground(BLACK);
             initCamera(&camera);
-                drawFloor(mainFloor);
+                //drawFloor(mainFloor);
                 drawWorld();
                 //DrawPlane((Vector3){0, 0, 0}, (Vector2){30,30}, DARKGRAY);
-                DrawCube((Vector3){ -4, 1, 0}, 2, 2, 2, RED);
-                DrawCubeWires((Vector3){ -4, 1, 0}, 2, 2, 2, GREEN);
-                DrawSphere((Vector3){0, 1, -6}, 1.0f, GREEN);
+                //DrawCube((Vector3){ -4, 1, 0}, 2, 2, 2, RED);
+                //DrawCubeWires((Vector3){ -4, 1, 0}, 2, 2, 2, GREEN);
+                //DrawSphere((Vector3){0, 1, -6}, 1.0f, GREEN);
             finishCamera();
                 DrawFPS(10,10);
 

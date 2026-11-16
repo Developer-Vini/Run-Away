@@ -1,6 +1,46 @@
 #include "../include/chunk.h"
 #include "../include/raylib.h"
 #include <math.h>
+#include "../include/raymath.h"
+
+static void addTriangle(Mesh *mesh, int *vertexIndex, Vector3 a, Vector3 b, Vector3 c){
+    Vector3 normal = Vector3Normalize(Vector3CrossProduct(Vector3Subtract(b, a), Vector3Subtract(c, a)));
+
+
+    Vector3 lightDirection = Vector3Normalize((Vector3){0.5f, 1.0f, 0.3f});
+    float light = Vector3DotProduct(normal, lightDirection);
+
+    if(light < 0.0f){
+        light = 0.0f;
+    }
+
+    float brig = 0.45f + 0.65f * light;
+
+    Vector3 corners[3] = {
+        a, b, c
+    };
+
+    for (int i = 0; i < 3; i++){
+        int vertex = *vertexIndex;
+        mesh->vertices[vertex * 3 + 0] = corners[i].x;
+        mesh->vertices[vertex * 3 + 1] = corners[i].y;
+        mesh->vertices[vertex * 3 + 2] = corners[i].z;
+    
+        mesh->normals[vertex * 3 + 0] = normal.x;
+        mesh->normals[vertex * 3 + 1] = normal.y;
+        mesh->normals[vertex * 3 + 2] = normal.z;
+    
+        mesh->colors[vertex * 4 + 0] = (unsigned char)(60 * brig);
+        mesh->colors[vertex * 4 + 1] = (unsigned char)(160 * brig);
+        mesh->colors[vertex * 4 + 2] = (unsigned char)(70 * brig);
+        mesh->colors[vertex * 4 + 3] = 255;
+
+        (*vertexIndex)++;
+    }
+
+}
+
+
 
 Chunk createChunk(int chunkX, int chunkZ){
     Chunk chunk = {0};
@@ -35,7 +75,7 @@ void drawChunk(const Chunk *chunk){
             DrawTriangle3D(pointA, pointC, pointB, DARKGREEN);
             DrawTriangle3D(pointB, pointC, pointD, DARKGREEN);
             DrawLine3D(pointA, pointB, DARKPURPLE);
-            DrawLine3D(pointA, pointC, DARKGRAY);
+            //DrawLine3D(pointA, pointC, DARKGRAY);
             
             //DrawSphere(position, 0.15f, DARKGREEN);
         }
