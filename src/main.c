@@ -1,6 +1,7 @@
 #include "../include/raylib.h"
 #include "../include/floor.h"
 #include "../include/camera.h"
+#include "../include/chunk.h"
 
 int main(void){
 
@@ -12,6 +13,8 @@ int main(void){
     GameCamera camera;
     createCamera(&camera, (Vector3){0.0f, 1.7f, 5.0f}, (Vector3){0.0f, 1.7f, 0.0f});
 
+    Chunk chunk = createChunk(0, 0);
+    
     while(!WindowShouldClose()){
         
         updateCamera(&camera);
@@ -20,6 +23,7 @@ int main(void){
             ClearBackground(BLACK);
             initCamera(&camera);
                 drawFloor(mainFloor);
+                drawChunk(&chunk);
                 //DrawPlane((Vector3){0, 0, 0}, (Vector2){30,30}, DARKGRAY);
                 DrawCube((Vector3){ -4, 1, 0}, 2, 2, 2, RED);
                 DrawCubeWires((Vector3){ -4, 1, 0}, 2, 2, 2, GREEN);

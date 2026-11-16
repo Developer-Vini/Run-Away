@@ -18,7 +18,7 @@ void drawChunk(const Chunk *chunk){
                 chunk->heights[x][z],
                 (float)(chunk->chunkZ * CHUNK_SIZE + z)
             };
-            DrawSphere(position, 0.15f, DARKGREEN);
+            //DrawSphere(position, 0.15f, DARKGREEN);
         }
     }
 }
