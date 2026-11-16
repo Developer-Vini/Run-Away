@@ -59,7 +59,7 @@ float getTerrainH(float worldX, float worldZ){
     float height = 0.0f;
     height += sinf(worldX * 0.05f) * cosf(worldZ * 0.05f) * 8.0f;
     height += sinf(worldX * 0.15f + worldZ * 0.1f) * 2.0f;
-    height += cosf(worldZ * 0.4f  + worldZ * 0.3f) * 0.5f;
+    height += cosf(worldZ * 0.4f  + worldX * 0.3f) * 0.5f;
     return height;
 }
 

@@ -11,5 +11,6 @@ typedef struct{
 void createCamera(GameCamera *GC, Vector3 position, Vector3 target);
 void updateCamera(GameCamera *UGC);
 void initCamera(GameCamera *IGC);
+void snapCameraToGround(GameCamera *GC, float eyeH);
 void finishCamera(void);
 #endif
