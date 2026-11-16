@@ -16,11 +16,27 @@ Chunk createChunk(int chunkX, int chunkZ){
 void drawChunk(const Chunk *chunk){
     for(int x = 0; x < CHUNK_SIZE; x++){
         for(int z = 0; z < CHUNK_SIZE; z++){
-            Vector3 position = {
-                (float)(chunk->chunkX *  CHUNK_SIZE + x),
-                chunk->heights[x][z],
-                (float)(chunk->chunkZ * CHUNK_SIZE + z)
+            float worldX = (float)(chunk->chunkX *  CHUNK_SIZE + x);
+            float worldZ = (float)(chunk->chunkZ *  CHUNK_SIZE + z);
+
+            Vector3 pointA = {
+                worldX, chunk->heights[x][z], worldZ
             };
+            Vector3 pointB = {
+                worldX + 1, getTerrainH(worldX + 1, worldZ), worldZ
+            };
+            Vector3 pointC = {
+                worldX, getTerrainH(worldX, worldZ + 1), worldZ + 1
+            };
+            Vector3 pointD = {
+                worldX + 1, getTerrainH(worldX + 1, worldZ + 1), worldZ + 1
+            };
+
+            DrawTriangle3D(pointA, pointC, pointB, DARKGREEN);
+            DrawTriangle3D(pointB, pointC, pointD, DARKGREEN);
+            DrawLine3D(pointA, pointB, DARKPURPLE);
+            DrawLine3D(pointA, pointC, DARKGRAY);
+            
             //DrawSphere(position, 0.15f, DARKGREEN);
         }
     }
