@@ -62,3 +62,19 @@ float getTerrainH(float worldX, float worldZ){
     height += cosf(worldZ * 0.4f  + worldZ * 0.3f) * 0.5f;
     return height;
 }
+
+int floorDivide(int value, int divisor){
+    int quotient = value / divisor;
+
+    if((value % divisor !=0) && ((value < 0) != (divisor < 0))){
+        quotient--;
+    }
+
+    return quotient;
+}
+
+int positiveModule(int value, int divisor){
+    int reminder = value % divisor;
+
+    return reminder < 0 ? remainder + divisor : remainder;
+}
