@@ -15,7 +15,7 @@ int main(void){
 
     Chunk chunk = createChunk(0, 0);
     Chunk chunk2 = createChunk(1, 0);
-Chunk chunk3 = createChunk(2, 0);
+    Chunk chunk3 = createChunk(2, 0);
     while(!WindowShouldClose()){
         
         updateCamera(&camera);

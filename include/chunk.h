@@ -14,5 +14,6 @@ Chunk createChunk(int chunkX, int chunkZ);
 void drawChunk(const Chunk *chunk);
 void generateChunkTerrain(Chunk *chunk);
 float getTerrainH(float worldX, float worldZ);
-
+int floorDivide(int value, int divisor);
+int positiveModule(int value, int divisor);
 #endif
