@@ -76,5 +76,5 @@ int floorDivide(int value, int divisor){
 int positiveModule(int value, int divisor){
     int reminder = value % divisor;
 
-    return reminder < 0 ? remainder + divisor : remainder;
+    return reminder < 0 ? reminder + divisor : reminder;
 }
