@@ -48,6 +48,40 @@ static void buildChunckMesh(Chunk *chunk){
             grid[x][z] = getTerrainH((float)(chunk->chunkX * CHUNK_SIZE + x), (float)(chunk->chunkZ * CHUNK_SIZE + z));
         }
     }
+
+    int quadCount = CHUNK_SIZE * CHUNK_SIZE;
+    int vertexCount = quadCount * 6;
+
+    Mesh mesh = {0};
+
+    mesh.vertexCount = vertexCount;
+    mesh.triangleCount = quadCount * 2;
+    mesh.vertices = MemAlloc(vertexCount * 3 * sizeof(float));
+    mesh.normals = MemAlloc(vertexCount * 3 * sizeof(float));
+    mesh.texcoords = MemAlloc(vertexCount * 2 * sizeof(float));
+    mesh.colors = MemAlloc(vertexCount * 4 * sizeof(unsigned char));
+
+    int vertexIndex = 0;
+
+    for(int x = 0; x < CHUNK_SIZE; x++){
+        for(int z = 0; z < CHUNK_SIZE; z++){
+            Vector3 pointA = {
+               (float)x, grid[x][z], (float) z
+            };
+            Vector3 pointB = {
+                (float)x, + 1, grid[x + 1][z], (float)z
+            };
+            Vector3 pointC = {
+                (float)x, grid[x][z + 1], (float)z + 1
+            };
+            Vector3 pointD = {
+                (float)x + 1, grid[x + 1][z + 1], (float)z + 1
+            };
+
+            UploadMesh(&mesh, false);
+            chunk->model = LoadModelFromMesh(mesh);
+        }
+    }
 }
 
 
@@ -63,32 +97,7 @@ Chunk createChunk(int chunkX, int chunkZ){
 }
 
 void drawChunk(const Chunk *chunk){
-    for(int x = 0; x < CHUNK_SIZE; x++){
-        for(int z = 0; z < CHUNK_SIZE; z++){
-            float worldX = (float)(chunk->chunkX *  CHUNK_SIZE + x);
-            float worldZ = (float)(chunk->chunkZ *  CHUNK_SIZE + z);
-
-            Vector3 pointA = {
-                worldX, chunk->heights[x][z], worldZ
-            };
-            Vector3 pointB = {
-                worldX + 1, getTerrainH(worldX + 1, worldZ), worldZ
-            };
-            Vector3 pointC = {
-                worldX, getTerrainH(worldX, worldZ + 1), worldZ + 1
-            };
-            Vector3 pointD = {
-                worldX + 1, getTerrainH(worldX + 1, worldZ + 1), worldZ + 1
-            };
-
-            DrawTriangle3D(pointA, pointC, pointB, DARKGREEN);
-            DrawTriangle3D(pointB, pointC, pointD, DARKGREEN);
-            DrawLine3D(pointA, pointB, DARKPURPLE);
-            //DrawLine3D(pointA, pointC, DARKGRAY);
-            
-            //DrawSphere(position, 0.15f, DARKGREEN);
-        }
-    }
+    
 }
 
 void generateChunkTerrain(Chunk *chunk){
