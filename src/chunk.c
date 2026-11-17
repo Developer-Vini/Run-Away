@@ -7,7 +7,7 @@
 
 static Texture2D terrainTexture;
 
-static void addTriangle(Mesh *mesh, int *vertexIndex, Vector3 a, Vector3 b, Vector3 c){
+static void addTriangle(Mesh *mesh, int *vertexIndex, Vector3 a, Vector3 b, Vector3 c, float originX, float originZ){
     Vector3 normal = Vector3Normalize(Vector3CrossProduct(Vector3Subtract(b, a), Vector3Subtract(c, a)));
 
 
@@ -34,10 +34,14 @@ static void addTriangle(Mesh *mesh, int *vertexIndex, Vector3 a, Vector3 b, Vect
         mesh->normals[vertex * 3 + 1] = normal.y;
         mesh->normals[vertex * 3 + 2] = normal.z;
     
-        mesh->colors[vertex * 4 + 0] = (unsigned char)(60 * brig);
-        mesh->colors[vertex * 4 + 1] = (unsigned char)(160 * brig);
-        mesh->colors[vertex * 4 + 2] = (unsigned char)(70 * brig);
+        mesh->colors[vertex * 4 + 0] = (unsigned char)(255 * brig);
+        mesh->colors[vertex * 4 + 1] = (unsigned char)(255 * brig);
+        mesh->colors[vertex * 4 + 2] = (unsigned char)(255 * brig);
         mesh->colors[vertex * 4 + 3] = 255;
+
+        mesh->texcoords[vertex * 2 + 0] = (originX + corners[i].x) / TEXTURE_TILE_SIZE;
+        mesh->texcoords[vertex * 2 + 1] = (originZ + corners[i].z) / TEXTURE_TILE_SIZE;
+        
 
         (*vertexIndex)++;
     }
@@ -65,6 +69,9 @@ static void buildChunckMesh(Chunk *chunk){
     mesh.texcoords = MemAlloc(vertexCount * 2 * sizeof(float));
     mesh.colors = MemAlloc(vertexCount * 4 * sizeof(unsigned char));
 
+    float originX = (float)(chunk->chunkX * CHUNK_SIZE);
+    float originZ = (float)(chunk->chunkZ * CHUNK_SIZE);
+
     int vertexIndex = 0;
 
     for(int x = 0; x < CHUNK_SIZE; x++){
@@ -83,12 +90,13 @@ static void buildChunckMesh(Chunk *chunk){
             };
 
 
-            addTriangle(&mesh, &vertexIndex, pointA, pointC, pointB);
-            addTriangle(&mesh, &vertexIndex, pointB, pointC, pointD);
+            addTriangle(&mesh, &vertexIndex, pointA, pointC, pointB, originX, originZ);
+            addTriangle(&mesh, &vertexIndex, pointB, pointC, pointD, originX, originZ);
         }
     }
     UploadMesh(&mesh, false);
     chunk->model = LoadModelFromMesh(mesh);
+    chunk->model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = terrainTexture;
 }
 
 
@@ -110,6 +118,8 @@ void drawChunk(const Chunk *chunk){
 }
 
 void unloadChunk(Chunk *chunk){
+
+    chunk->model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture.id = 0;
     UnloadModel(chunk->model);
 }
 
@@ -151,7 +161,7 @@ float getTerrainH(float worldX, float worldZ){
     return relief * zone + detail;
 }
 void loadTerrainTexture(void){
-    terrainTexture = LoadTexture("../assets/tiles_floor_1.png");
+    terrainTexture = LoadTexture("assets/tiles_floor_1.png");
     GenTextureMipmaps(&terrainTexture);
     SetTextureFilter(terrainTexture, TEXTURE_FILTER_TRILINEAR);
     SetTextureWrap(terrainTexture, TEXTURE_WRAP_REPEAT);
