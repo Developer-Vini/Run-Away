@@ -19,12 +19,11 @@ int main(void){
         snapCameraToGround(&camera, 1.7f);
         updateWorld(camera.camera.position);
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBackground(SKYBLUE);
             initCamera(&camera);
                 drawWorld();
             finishCamera();
                 DrawFPS(10,10);
-
         EndDrawing();
     }
 

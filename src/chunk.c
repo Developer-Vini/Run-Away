@@ -125,7 +125,7 @@ void generateChunkTerrain(Chunk *chunk){
 float getTerrainH(float worldX, float worldZ){
     float zone = sinf(worldX * 0.012f + 1.3f) * cosf(worldZ * 0.0009f + 0.7f);
 
-    zone = (zone - 0.2f) /0.6;
+    zone = (zone - 0.2f) / 0.6;
     if(zone < 0.0f){
         zone = 0.0f;
     }
