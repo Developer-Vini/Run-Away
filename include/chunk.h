@@ -22,4 +22,5 @@ int floorDivide(int value, int divisor);
 int positiveModule(int value, int divisor);
 
 void unloadChunk(Chunk *chunk);
+
 #endif
