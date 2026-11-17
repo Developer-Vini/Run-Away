@@ -26,4 +26,5 @@ void unloadChunk(Chunk *chunk);
 void loadTerrainTexture(void);
 void unloadTerrainTexture(void);
 
+void loadTerrainShader(void);
 #endif
