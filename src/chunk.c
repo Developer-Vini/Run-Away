@@ -43,8 +43,8 @@ static void addTriangle(Mesh *mesh, int *vertexIndex, Vector3 a, Vector3 b, Vect
 static void buildChunckMesh(Chunk *chunk){
     float grid[CHUNK_SIZE + 1][CHUNK_SIZE + 1];
 
-    for(int x = 0; x < CHUNK_SIZE; x++){
-        for(int z = 0; z < CHUNK_SIZE; z++){
+    for(int x = 0; x <= CHUNK_SIZE; x++){
+        for(int z = 0; z <= CHUNK_SIZE; z++){
             grid[x][z] = getTerrainH((float)(chunk->chunkX * CHUNK_SIZE + x), (float)(chunk->chunkZ * CHUNK_SIZE + z));
         }
     }
@@ -78,10 +78,13 @@ static void buildChunckMesh(Chunk *chunk){
                 (float)x + 1, grid[x + 1][z + 1], (float)z + 1
             };
 
-            UploadMesh(&mesh, false);
-            chunk->model = LoadModelFromMesh(mesh);
+
+            addTriangle(&mesh, &vertexIndex, pointA, pointC, pointB);
+            addTriangle(&mesh, &vertexIndex, pointB, pointC, pointD);
         }
     }
+    UploadMesh(&mesh, false);
+    chunk->model = LoadModelFromMesh(mesh);
 }
 
 

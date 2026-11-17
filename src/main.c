@@ -27,6 +27,8 @@ static void updateChunks(Vector3 playerPosition){
             Chunk *slot = &loadedChuncks[slotX][slotZ];
             bool isWrongChun = slot->chunkX != chunkX || slot->chunkZ != chunkZ;
 
+
+            //TraceLog(LOG_INFO, "criando chunk %d %d no slot %d %d", chunkX, chunkZ, slotX, slotZ);
             if(!isLoaded[slotX][slotZ] || isWrongChun){
                 if(isLoaded[slotX][slotZ]){
                     unloadChunk(slot);
