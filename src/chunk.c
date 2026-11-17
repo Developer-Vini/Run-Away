@@ -123,11 +123,28 @@ void generateChunkTerrain(Chunk *chunk){
 }
 
 float getTerrainH(float worldX, float worldZ){
-    float height = 0.0f;
-    height += sinf(worldX * 0.05f) * cosf(worldZ * 0.05f) * 8.0f;
-    height += sinf(worldX * 0.15f + worldZ * 0.1f) * 2.0f;
-    height += cosf(worldZ * 0.4f  + worldX * 0.3f) * 0.5f;
-    return height;
+    float zone = sinf(worldX * 0.012f + 1.3f) * cosf(worldZ * 0.0009f + 0.7f);
+
+    zone = (zone - 0.2f) /0.6;
+    if(zone < 0.0f){
+        zone = 0.0f;
+    }
+
+    if(zone > 1.0f){
+        zone = 1.0f;
+    }
+
+    zone = zone * zone * (3.0f - 2.0f * zone);
+
+    float relief = 0.0f;
+
+    relief += sinf(worldX * 0.05f) * cosf(worldZ * 0.05f) * 8.0f;
+    relief += sinf(worldX * 0.15f + worldZ * 0.1f) * 2.0f;
+
+
+    float detail = cosf(worldZ * 0.4f + worldX * 0.3f) * 0.2f;
+
+    return relief * zone + detail;
 }
 
 int floorDivide(int value, int divisor){
