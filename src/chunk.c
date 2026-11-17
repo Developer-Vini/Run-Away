@@ -18,7 +18,7 @@ static void addTriangle(Mesh *mesh, int *vertexIndex, Vector3 a, Vector3 b, Vect
         light = 0.0f;
     }
 
-    float brig = 0.45f + 0.65f * light;
+    float brig = 0.15f + 0.65f * light;
 
     Vector3 corners[3] = {
         a, b, c
@@ -34,9 +34,9 @@ static void addTriangle(Mesh *mesh, int *vertexIndex, Vector3 a, Vector3 b, Vect
         mesh->normals[vertex * 3 + 1] = normal.y;
         mesh->normals[vertex * 3 + 2] = normal.z;
     
-        mesh->colors[vertex * 4 + 0] = (unsigned char)(255 * brig);
-        mesh->colors[vertex * 4 + 1] = (unsigned char)(255 * brig);
-        mesh->colors[vertex * 4 + 2] = (unsigned char)(255 * brig);
+        mesh->colors[vertex * 4 + 0] = (unsigned char)(200 * brig);
+        mesh->colors[vertex * 4 + 1] = (unsigned char)(210 * brig);
+        mesh->colors[vertex * 4 + 2] = (unsigned char)(220 * brig);
         mesh->colors[vertex * 4 + 3] = 255;
 
         mesh->texcoords[vertex * 2 + 0] = (originX + corners[i].x) / TEXTURE_TILE_SIZE;

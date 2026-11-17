@@ -11,6 +11,7 @@ int main(void){
     DisableCursor();
     SetTargetFPS(60);
 
+    
     GameCamera camera;
 
     createCamera(&camera, (Vector3){0.0f, 1.7f, 5.0f}, (Vector3){0.0f, 1.7f, 0.0f});
@@ -21,7 +22,7 @@ int main(void){
         snapCameraToGround(&camera, 1.7f);
         updateWorld(camera.camera.position);
         BeginDrawing();
-            ClearBackground(SKYBLUE);
+            ClearBackground((Color){0, 0, 0, 240});
             initCamera(&camera);
                 drawWorld();
             finishCamera();
