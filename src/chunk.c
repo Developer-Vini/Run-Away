@@ -69,7 +69,7 @@ static void buildChunckMesh(Chunk *chunk){
                (float)x, grid[x][z], (float) z
             };
             Vector3 pointB = {
-                (float)x, + 1, grid[x + 1][z], (float)z
+                (float)x + 1, grid[x + 1][z], (float)z
             };
             Vector3 pointC = {
                 (float)x, grid[x][z + 1], (float)z + 1
