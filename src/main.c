@@ -28,6 +28,9 @@ static void updateChunks(Vector3 playerPosition){
             bool isWrongChun = slot->chunkX != chunkX || slot->chunkZ != chunkZ;
 
             if(!isLoaded[slotX][slotZ] || isWrongChun){
+                if(isLoaded[slotX][slotZ]){
+                    unloadChunk(slot);
+                }
                 *slot = createChunk(chunkX, chunkZ);
                 isLoaded[slotX][slotZ] = true;
             }
@@ -74,6 +77,15 @@ int main(void){
 
         EndDrawing();
     }
+
+    for(int i = 0; i < GRID_SIZE; i++){
+        for(int j = 0; j < GRID_SIZE; j++){
+            if(isLoaded[i][j]){
+                unloadChunk(&loadedChuncks[i][j]);
+            }
+        }
+    }
+
 
     CloseWindow();
     return 0;

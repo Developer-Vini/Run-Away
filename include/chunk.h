@@ -3,6 +3,8 @@
 
 #define CHUNK_SIZE 16
 
+#include "../include/raylib.h"
+
 typedef struct {
     int chunkX;
     int chunkZ;
