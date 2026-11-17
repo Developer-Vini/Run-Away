@@ -92,12 +92,18 @@ Chunk createChunk(int chunkX, int chunkZ){
     chunk.chunkZ = chunkZ;
 
     generateChunkTerrain(&chunk);
+    buildChunckMesh(&chunk);
 
     return chunk;
 }
 
 void drawChunk(const Chunk *chunk){
-    
+    Vector3 worldPosition = {(float)(chunk->chunkX * CHUNK_SIZE), 0.0f, (float)(chunk->chunkZ * CHUNK_SIZE)};
+    DrawModel(chunk->model, worldPosition, 1.0f, WHITE);
+}
+
+void unloadChunk(Chunk *chunk){
+    UnloadModel(chunk->model);
 }
 
 void generateChunkTerrain(Chunk *chunk){
