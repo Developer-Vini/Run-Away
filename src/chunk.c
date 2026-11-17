@@ -1,11 +1,12 @@
 #include "../include/chunk.h"
 #include "../include/raylib.h"
 #include <math.h>
+#include <stddef.h>
 #include "../include/raymath.h"
 
 #define  TEXTURE_TILE_SIZE 4.0f
-#define FOG_START 15.0f
-#define FOG_END 55.0f
+#define FOG_START 3.0f
+#define FOG_END 28.0f
 
 
 static Texture2D terrainTexture;
@@ -24,7 +25,7 @@ static void addTriangle(Mesh *mesh, int *vertexIndex, Vector3 a, Vector3 b, Vect
         light = 0.0f;
     }
 
-    float brig = 0.15f + 0.65f * light;
+    float brig = 0.03f + 0.45f * light;
 
     Vector3 corners[3] = {
         a, b, c
@@ -40,9 +41,9 @@ static void addTriangle(Mesh *mesh, int *vertexIndex, Vector3 a, Vector3 b, Vect
         mesh->normals[vertex * 3 + 1] = normal.y;
         mesh->normals[vertex * 3 + 2] = normal.z;
     
-        mesh->colors[vertex * 4 + 0] = (unsigned char)(200 * brig);
-        mesh->colors[vertex * 4 + 1] = (unsigned char)(210 * brig);
-        mesh->colors[vertex * 4 + 2] = (unsigned char)(220 * brig);
+        mesh->colors[vertex * 4 + 0] = (unsigned char)(190 * brig);
+        mesh->colors[vertex * 4 + 1] = (unsigned char)(200 * brig);
+        mesh->colors[vertex * 4 + 2] = (unsigned char)(210 * brig);
         mesh->colors[vertex * 4 + 3] = 255;
 
         mesh->texcoords[vertex * 2 + 0] = (originX + corners[i].x) / TEXTURE_TILE_SIZE;
@@ -102,6 +103,7 @@ static void buildChunckMesh(Chunk *chunk){
     }
     UploadMesh(&mesh, false);
     chunk->model = LoadModelFromMesh(mesh);
+    chunk->model.materials[0].shader = terrainShader;
     chunk->model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = terrainTexture;
 }
 
@@ -126,6 +128,8 @@ void drawChunk(const Chunk *chunk){
 void unloadChunk(Chunk *chunk){
 
     chunk->model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture.id = 0;
+    chunk->model.materials[0].shader.id = 0;
+    chunk->model.materials[0].shader.locs = NULL;
     UnloadModel(chunk->model);
 }
 
@@ -193,17 +197,30 @@ int positiveModule(int value, int divisor){
 void loadTerrainShader(void){
     terrainShader = LoadShader("assets/fog.vs", "assets/fog.fs");
     viewPositionLocation = GetShaderLocation(terrainShader, "viewPos");
+    terrainShader.locs[SHADER_LOC_MATRIX_MODEL] = GetShaderLocation(terrainShader, "matModel");
+    //viewPositionLocation = GetShaderLocation(terrainShader, "viewPos");
 
     float fogColor[3] = {
-        70.0f / 255.0f, 
-        78.0f / 255.0f,
-        85.0f / 255.0f
+        10.0f / 255.0f, 
+        14.0f / 255.0f,
+        17.0f / 255.0f
     };
     float fogStart = FOG_START;
     float fogEnd = FOG_END;
 
-    SetShaderValue(terrainShader, GetShaderLocation(terrainShader, "fogColor"), fogColor, SHADER_UNIFORM_IVEC3);
+    SetShaderValue(terrainShader, GetShaderLocation(terrainShader, "fogColor"), fogColor, SHADER_UNIFORM_VEC3);
     SetShaderValue(terrainShader, GetShaderLocation(terrainShader, "fogStart"), &fogStart, SHADER_UNIFORM_FLOAT);
-    SetShaderValue(terrainShader, GetShaderLocation(terrainShader, "fogEnd"), &fogEnd, SHADER_ATTRIB_FLOAT);
+    SetShaderValue(terrainShader, GetShaderLocation(terrainShader, "fogEnd"), &fogEnd, SHADER_UNIFORM_FLOAT);
        
+}
+
+void unloadTerrainShader(void){
+    UnloadShader(terrainShader);
+}
+
+void updateTerrainShader(Vector3 cameraPosition){
+    float position[3] = {
+        cameraPosition.x, cameraPosition.y, cameraPosition.z
+    };
+    SetShaderValue(terrainShader, viewPositionLocation, position, SHADER_UNIFORM_VEC3);
 }

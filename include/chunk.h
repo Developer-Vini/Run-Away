@@ -27,4 +27,6 @@ void loadTerrainTexture(void);
 void unloadTerrainTexture(void);
 
 void loadTerrainShader(void);
+void unloadTerrainShader(void);
+void updateTerrainShader(Vector3 cameraPosition);
 #endif

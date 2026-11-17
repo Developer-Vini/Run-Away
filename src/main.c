@@ -2,11 +2,13 @@
 #include "../include/camera.h"
 #include "../include/world.h"
 #include "../include/chunk.h"
+
 int main(void){
 
     InitWindow( 1280, 720, "test telça");
 
     loadTerrainTexture();
+    loadTerrainShader();
 
     DisableCursor();
     SetTargetFPS(60);
@@ -21,8 +23,9 @@ int main(void){
         updateCamera(&camera);
         snapCameraToGround(&camera, 1.7f);
         updateWorld(camera.camera.position);
+        updateTerrainShader(camera.camera.position);
         BeginDrawing();
-            ClearBackground((Color){0, 0, 0, 240});
+            ClearBackground((Color){10, 14, 17, 255});
             initCamera(&camera);
                 drawWorld();
             finishCamera();
@@ -31,6 +34,7 @@ int main(void){
     }
 
     unloadWorld();
+    unloadTerrainShader();
     unloadTerrainTexture();
     CloseWindow();
     return 0;
