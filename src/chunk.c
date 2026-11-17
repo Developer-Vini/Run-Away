@@ -157,7 +157,7 @@ void loadTerrainTexture(void){
     SetTextureWrap(terrainTexture, TEXTURE_WRAP_REPEAT);
 }
 void unloadTerrainTexture(void){
-
+    UnloadTexture(terrainTexture);
 }
 int floorDivide(int value, int divisor){
     int quotient = value / divisor;
