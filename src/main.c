@@ -1,10 +1,12 @@
 #include "../include/raylib.h"
 #include "../include/camera.h"
 #include "../include/world.h"
-
+#include "../include/chunk.h"
 int main(void){
 
     InitWindow( 1280, 720, "test telça");
+
+    loadTerrainTexture();
 
     DisableCursor();
     SetTargetFPS(60);
@@ -28,7 +30,7 @@ int main(void){
     }
 
     unloadWorld();
-
+    unloadTerrainTexture();
     CloseWindow();
     return 0;
 
