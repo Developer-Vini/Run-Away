@@ -3,6 +3,10 @@
 #include <math.h>
 #include "../include/raymath.h"
 
+#define  TEXTURE_TILE_SIZE 4.0f
+
+static Texture2D terrainTexture;
+
 static void addTriangle(Mesh *mesh, int *vertexIndex, Vector3 a, Vector3 b, Vector3 c){
     Vector3 normal = Vector3Normalize(Vector3CrossProduct(Vector3Subtract(b, a), Vector3Subtract(c, a)));
 
@@ -146,7 +150,15 @@ float getTerrainH(float worldX, float worldZ){
 
     return relief * zone + detail;
 }
+void loadTerrainTexture(void){
+    terrainTexture = LoadTexture("../assets/tiles_floor_1.png");
+    GenTextureMipmaps(&terrainTexture);
+    SetTextureFilter(terrainTexture, TEXTURE_FILTER_TRILINEAR);
+    SetTextureWrap(terrainTexture, TEXTURE_WRAP_REPEAT);
+}
+void unloadTerrainTexture(void){
 
+}
 int floorDivide(int value, int divisor){
     int quotient = value / divisor;
 

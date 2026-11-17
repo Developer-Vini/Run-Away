@@ -23,4 +23,7 @@ int positiveModule(int value, int divisor);
 
 void unloadChunk(Chunk *chunk);
 
+void loadTerrainTexture(void);
+void unloadTerrainTexture(void);
+
 #endif
