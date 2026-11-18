@@ -2,6 +2,7 @@
 #include "../include/camera.h"
 #include "../include/world.h"
 #include "../include/chunk.h"
+#include "../include/weapon.h"
 
 int main(void){
 
@@ -18,21 +19,27 @@ int main(void){
 
     createCamera(&camera, (Vector3){0.0f, 1.7f, 5.0f}, (Vector3){0.0f, 1.7f, 0.0f});
 
+
+    Weapon weapon = createWeapon();
+
     while(!WindowShouldClose()){
         
         updateCamera(&camera);
         snapCameraToGround(&camera, 1.7f);
         updateWorld(camera.camera.position);
         updateTerrainShader(camera.camera.position);
+        updateWeapon(&weapon);
         BeginDrawing();
             ClearBackground((Color){10, 14, 17, 255});
             initCamera(&camera);
                 drawWorld();
+                drawWeapon(&weapon, camera.camera);
             finishCamera();
                 DrawFPS(10,10);
         EndDrawing();
     }
 
+    unloadWeapon(&weapon);
     unloadWorld();
     unloadTerrainShader();
     unloadTerrainTexture();

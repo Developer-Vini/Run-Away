@@ -9,12 +9,12 @@ Weapon createWeapon(void){
     TraceLog(LOG_INFO, "marma: meshes=%d materials=%d", weapon.model.meshCount, weapon.model.materials);
 
     weapon.offsetFromCamera = (Vector3){
-        0.0f, 0.0f, 0.0f
+        0.158f, -0.125f, 0.717f
     };
     weapon.correctionAngles = (Vector3){
-        0.0f, 0.0f, 0.0f
+        90.0f, 180.0f, 180.0f
     };
-    weapon.scale = 1.0f;
+    weapon.scale = 0.7f;
 
     return weapon;
 }
@@ -92,4 +92,8 @@ void drawWeapon(Weapon *weapon, Camera3D camera){
     weapon->model.transform = MatrixMultiply(corection, cameraRotaion);
 
     DrawModel(weapon->model, position, weapon->scale, WHITE);
+}
+
+void unloadWeapon(Weapon *weapon){
+    UnloadModel(weapon->model);
 }
