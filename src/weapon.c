@@ -12,6 +12,9 @@ Weapon createWeapon(void){
 
     weapon.model = LoadModel("assets/3Dmodels/fps_animations_vsk.glb");
 
+    weapon.animations = LoadModelAnimations("assets/3Dmodels/fps_animations_vsk.glb", &weapon.animationsCount);
+    TraceLog(LOG_INFO, "animacoes carregadas: %d", weapon.animationsCount);
+
     TraceLog(LOG_INFO, "marma: meshes=%d materials=%d", weapon.model.meshCount, weapon.model.materials);
 
     weapon.offsetFromCamera = (Vector3){
