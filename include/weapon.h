@@ -21,4 +21,6 @@ void updateWeapon(Weapon *weapon);
 void drawWeapon(Weapon *weapon, Camera3D camera);
 void unloadWeapon(Weapon *weapon);
 
+void updateWeaponAnimation(Weapon *weapon);
+
 #endif
