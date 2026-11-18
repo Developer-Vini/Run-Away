@@ -1,6 +1,12 @@
 #include "../include/weapon.h"
 #include "../include/raymath.h"
 
+#define ANIMATION_IDLE 0
+#define ANIMATION_WALK 1
+#define ANIMATION_FIRE 4
+#define ANIMATION_RELOAD 5
+
+
 Weapon createWeapon(void){
     Weapon weapon = {0};
 
@@ -97,3 +103,4 @@ void drawWeapon(Weapon *weapon, Camera3D camera){
 void unloadWeapon(Weapon *weapon){
     UnloadModel(weapon->model);
 }
+
