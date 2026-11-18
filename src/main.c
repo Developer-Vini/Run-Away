@@ -27,6 +27,7 @@ int main(void){
         updateCamera(&camera);
         snapCameraToGround(&camera, 1.7f);
         updateWorld(camera.camera.position);
+        updateWeaponAnimation(&weapon);
         updateTerrainShader(camera.camera.position);
         updateWeapon(&weapon);
         BeginDrawing();

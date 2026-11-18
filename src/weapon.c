@@ -13,22 +13,40 @@ Weapon createWeapon(void){
     weapon.model = LoadModel("assets/3Dmodels/fps_animations_vsk.glb");
 
     weapon.animations = LoadModelAnimations("assets/3Dmodels/fps_animations_vsk.glb", &weapon.animationsCount);
+
+    for(int i = 0; i < weapon.animationsCount; i++){
+        if(!IsModelAnimationValid(weapon.model, weapon.animations[i])){
+
+            TraceLog(LOG_WARNING, "anmicacao %d (%s) nao combina com o modelo", i, weapon.animations[i].name);
+        }
+    }
+
     TraceLog(LOG_INFO, "animacoes carregadas: %d", weapon.animationsCount);
 
     TraceLog(LOG_INFO, "marma: meshes=%d materials=%d", weapon.model.meshCount, weapon.model.materials);
 
     weapon.offsetFromCamera = (Vector3){
-        0.158f, -0.125f, 0.717f
+        0.053f, -0.260f, 0.287f
     };
     weapon.correctionAngles = (Vector3){
-        90.0f, 180.0f, 180.0f
+        270.0f, 0.0f, 0.0f
     };
-    weapon.scale = 0.7f;
+    weapon.scale = 0.0045f;
 
     return weapon;
 }
 
 void updateWeapon(Weapon *weapon){
+
+    static bool isAdjustOn = false;
+
+    if(IsKeyPressed(KEY_F1)){
+        isAdjustOn = !isAdjustOn;
+        TraceLog(LOG_INFO, "ajuste: %s", isAdjustOn ? "LIGADO" : "DESLIGADO");
+    }
+
+    if(!isAdjustOn) return;
+
     float deltaTime = GetFrameTime();
     float moveStep = 0.5f * deltaTime;
 
@@ -104,6 +122,46 @@ void drawWeapon(Weapon *weapon, Camera3D camera){
 }
 
 void unloadWeapon(Weapon *weapon){
+    UnloadModelAnimations(weapon->animations, weapon->animationsCount);
     UnloadModel(weapon->model);
 }
 
+
+void updateWeaponAnimation(Weapon *weapon){
+    if(weapon->animationsCount == 0) return;
+
+    bool isBusy = weapon->currentAnimation == ANIMATION_FIRE || weapon->currentAnimation == ANIMATION_RELOAD;
+    
+    if(!isBusy && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+        weapon->currentAnimation = ANIMATION_FIRE;
+        weapon->currentFrame = 0;
+    }else if(!isBusy && IsKeyPressed(KEY_R)){
+        weapon->currentAnimation = ANIMATION_RELOAD;
+        weapon->currentFrame = 0;
+    }
+
+    ModelAnimation animation = weapon->animations[weapon->currentAnimation];
+    weapon->currentFrame++;
+
+    if(weapon->currentFrame >= animation.keyframeCount){
+        weapon->currentFrame = 0;
+
+        bool isMoving = IsKeyDown(KEY_W) || IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D);
+
+        weapon->currentAnimation = isMoving ? ANIMATION_WALK : ANIMATION_IDLE;
+    }
+
+    if(!isBusy){
+        bool isMoving = IsKeyDown(KEY_W) || IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D);
+
+        int wanted = isMoving ? ANIMATION_WALK : ANIMATION_IDLE;
+        if(weapon->currentAnimation != wanted){
+            weapon->currentAnimation = wanted;
+            weapon->currentFrame = 0;
+        }
+    }
+
+
+    UpdateModelAnimation(weapon->model, weapon->animations[weapon->currentAnimation], weapon->currentFrame);
+
+}
