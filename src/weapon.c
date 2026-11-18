@@ -70,5 +70,26 @@ void updateWeapon(Weapon *weapon){
 void drawWeapon(Weapon *weapon, Camera3D camera){
     Vector3 foward = Vector3Normalize(Vector3Subtract(camera.target, camera.position));
     Vector3 right = Vector3Normalize(Vector3CrossProduct(foward, camera.up));
-    Vector3 up = Vector
+    Vector3 up = Vector3CrossProduct(right, foward);
+
+    Vector3 position = camera.position;
+
+    position = Vector3Add(position, Vector3Scale(right, weapon->offsetFromCamera.x));    
+    position = Vector3Add(position, Vector3Scale(up, weapon->offsetFromCamera.y));
+    position = Vector3Add(position, Vector3Scale(foward, weapon->offsetFromCamera.z));
+
+    float yaw = atan2f(foward.x, foward.z);
+    float pitch = -asinf(foward.y);
+
+    Vector3 corectionRadians = {
+        weapon->correctionAngles.x * DEG2RAD,
+        weapon->correctionAngles.y * DEG2RAD,
+        weapon->correctionAngles.z * DEG2RAD
+    };
+
+    Matrix corection = MatrixRotateXYZ(corectionRadians);
+    Matrix cameraRotaion = MatrixMultiply(MatrixRotateX(pitch), MatrixRotateY(yaw));
+    weapon->model.transform = MatrixMultiply(corection, cameraRotaion);
+
+    DrawModel(weapon->model, position, weapon->scale, WHITE);
 }
