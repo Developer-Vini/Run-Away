@@ -35,7 +35,6 @@ void updateWeapon(Weapon *weapon){
         weapon->correctionAngles.z += 90.0f;
     }
 
-
     if(IsKeyDown(KEY_EQUAL)){
         weapon->scale *= 1.0f + 2.0f * deltaTime;
     }
@@ -43,22 +42,23 @@ void updateWeapon(Weapon *weapon){
         weapon->scale /= 1.0f + 2.0f * deltaTime;
     }
 
+    
     if(IsKeyDown(KEY_RIGHT)){
         weapon->offsetFromCamera.x += moveStep;
     }
-        if(IsKeyDown(KEY_LEFT)){
+    if(IsKeyDown(KEY_LEFT)){
         weapon->offsetFromCamera.x -= moveStep;
     }
-        if(IsKeyDown(KEY_UP)){
+    if(IsKeyDown(KEY_UP)){
         weapon->offsetFromCamera.y += moveStep;
     }
-        if(IsKeyDown(KEY_DOWN)){
+    if(IsKeyDown(KEY_DOWN)){
         weapon->offsetFromCamera.y -= moveStep;
     }
-        if(IsKeyDown(KEY_PAGE_UP)){
+    if(IsKeyDown(KEY_PAGE_UP)){
         weapon->offsetFromCamera.z += moveStep;
     }
-        if(IsKeyDown(KEY_PAGE_DOWN)){
+    if(IsKeyDown(KEY_PAGE_DOWN)){
         weapon->offsetFromCamera.z -= moveStep;
     }
 
