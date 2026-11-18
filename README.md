@@ -15,3 +15,5 @@ A = Walk left
 D = Walk right
 
 To test the project (I don't recommend it, it's not very good, but just open game.exe)
+
+Please note, this is not the final version; I'm still working on the game. This is just to keep track of the hours :)
