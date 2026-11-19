@@ -36,7 +36,7 @@ static void finishedLoad(Weapon *weapon){
 
 static void playSound(Sound sound){
     if(!IsSoundValid(sound)) return;
-    
+
     SetSoundPitch(sound, GetRandomValue(95, 105) / 100.0f);
     PlaySound(sound);
 }
@@ -82,6 +82,12 @@ Weapon createWeapon(void){
         270.0f, 0.0f, 0.0f
     };
     weapon.scale = 0.0045f;
+
+
+    weapon.magazineAmmo = MAGAZINE_SIZE;
+    weapon.reserveAmmo = STARTING_RESERVE_AMMO;
+    weapon.shotSound = LoadSound("assets/sounds/tiro.mp3");
+    weapon.emptySound = LoadSound("assets/sounds/tiro.mp3");
 
     return weapon;
 }
@@ -200,6 +206,9 @@ void unloadWeapon(Weapon *weapon){
     
     UnloadModel(weapon->model);
     UnloadShader(weapon->shader);
+
+    UnloadSound(weapon->shotSound);
+    UnloadSound(weapon->emptySound);
 }
 
 
