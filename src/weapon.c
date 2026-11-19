@@ -34,6 +34,13 @@ static void finishedLoad(Weapon *weapon){
 
 }
 
+static void playSound(Sound sound){
+    if(!IsSoundValid(sound)) return;
+    
+    SetSoundPitch(sound, GetRandomValue(95, 105) / 100.0f);
+    PlaySound(sound);
+}
+
 Weapon createWeapon(void){
     Weapon weapon = {0};
 

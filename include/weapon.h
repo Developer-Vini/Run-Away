@@ -21,6 +21,9 @@ typedef struct {
     int magazineAmmo;
     int reserveAmmo;
     float fireColdown;
+
+    Sound shotSound;
+    Sound emptySound;
 } Weapon;
 
 Weapon createWeapon(void);
