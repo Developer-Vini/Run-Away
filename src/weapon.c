@@ -20,6 +20,11 @@ static bool isReloading(const Weapon *weapon){
     return weapon->currentAnimation == ANIMATION_RELOAD_PARTIAL || weapon->currentAnimation == ANIMATION_RELOAD_EMPTY;
 }
 
+static void playAnimation(Weapon *weapon, int animationIndex){
+    weapon->currentAnimation = animationIndex;
+    weapon->currentAnimation = 0.0f;
+}
+
 
 Weapon createWeapon(void){
     Weapon weapon = {0};
