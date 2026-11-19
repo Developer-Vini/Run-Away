@@ -16,6 +16,11 @@
 #define IS_AUTO true
 
 
+static bool isReloading(const Weapon *weapon){
+    return weapon->currentAnimation == ANIMATION_RELOAD_PARTIAL || weapon->currentAnimation == ANIMATION_RELOAD_EMPTY;
+}
+
+
 Weapon createWeapon(void){
     Weapon weapon = {0};
 
