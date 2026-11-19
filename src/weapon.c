@@ -25,6 +25,14 @@ static void playAnimation(Weapon *weapon, int animationIndex){
     weapon->currentAnimation = 0.0f;
 }
 
+static void finishedLoad(Weapon *weapon){
+    int missingAmmo = MAGAZINE_SIZE - weapon->magazineAmmo;
+    int loadedAmmo = missingAmmo < weapon->reserveAmmo ? missingAmmo : weapon->reserveAmmo;
+
+    weapon->magazineAmmo += loadedAmmo;
+    weapon->reserveAmmo -= loadedAmmo;
+
+}
 
 Weapon createWeapon(void){
     Weapon weapon = {0};
