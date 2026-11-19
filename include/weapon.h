@@ -13,6 +13,9 @@ typedef struct {
     ModelAnimation *animations;
     int animationsCount;
     int currentAnimation;
+
+    int armsMeshI;
+
     int currentFrame;
 } Weapon;
 

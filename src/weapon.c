@@ -21,6 +21,15 @@ Weapon createWeapon(void){
         }
     }
 
+    weapon.armsMeshI = 0;
+    for(int i = 0; i < weapon.model.meshCount; i++){
+        TraceLog(LOG_INFO, "malha %d: %d vertices", i, weapon.model.meshes[i].vertexCount);
+
+        if(weapon.model.meshes[i].vertexCount > weapon.model.meshes[weapon.armsMeshI].vertexCount){
+            weapon.armsMeshI = i;
+        }
+    }
+
     TraceLog(LOG_INFO, "animacoes carregadas: %d", weapon.animationsCount);
 
     TraceLog(LOG_INFO, "marma: meshes=%d materials=%d", weapon.model.meshCount, weapon.model.materials);
@@ -118,7 +127,17 @@ void drawWeapon(Weapon *weapon, Camera3D camera){
     Matrix cameraRotaion = MatrixMultiply(MatrixRotateX(pitch), MatrixRotateY(yaw));
     weapon->model.transform = MatrixMultiply(corection, cameraRotaion);
 
-    DrawModel(weapon->model, position, weapon->scale, WHITE);
+    Matrix scaleMatrix = MatrixScale(weapon->scale, weapon->scale, weapon->scale);
+    Matrix translationMatrix = MatrixTranslate(position.x, position.y, position.z);
+    Matrix finalTransform = MatrixMultiply(weapon->model.transform, MatrixMultiply(scaleMatrix, translationMatrix));
+
+    for(int i = 0; i < weapon->model.meshCount; i++){
+        if(i == weapon->armsMeshI) continue;
+
+        Material material = weapon->model.materials[weapon->model.meshMaterial[i]];
+        DrawMesh(weapon->model.meshes[i], material, finalTransform);
+    }
+    //DrawModel(weapon->model, position, weapon->scale, WHITE);
 }
 
 void unloadWeapon(Weapon *weapon){
