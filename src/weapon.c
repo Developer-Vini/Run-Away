@@ -1,6 +1,8 @@
 #include "../include/weapon.h"
 #include "../include/raymath.h"
 
+#include <stddef.h>
+
 #define ANIMATION_IDLE 0
 #define ANIMATION_WALK 1
 #define ANIMATION_FIRE 4
@@ -28,6 +30,13 @@ Weapon createWeapon(void){
         if(weapon.model.meshes[i].vertexCount > weapon.model.meshes[weapon.armsMeshI].vertexCount){
             weapon.armsMeshI = i;
         }
+    }
+
+    weapon.shader = LoadShader("assets/weapon.vs", "assets/weapon.fs");
+    weapon.vPositionLocation = GetShaderLocation(weapon.shader, "viewPos");
+
+    for(int i = 0; i < weapon.model.materialCount; i++){
+        weapon.model.materials[i].shader = weapon.shader;
     }
 
     TraceLog(LOG_INFO, "animacoes carregadas: %d", weapon.animationsCount);
@@ -131,6 +140,15 @@ void drawWeapon(Weapon *weapon, Camera3D camera){
     Matrix translationMatrix = MatrixTranslate(position.x, position.y, position.z);
     Matrix finalTransform = MatrixMultiply(weapon->model.transform, MatrixMultiply(scaleMatrix, translationMatrix));
 
+
+    float cameraPosition[3] = {
+        camera.position.x,
+        camera.position.y,
+        camera.position.z,
+    };
+    SetShaderValue(weapon->shader, weapon->vPositionLocation, cameraPosition, SHADER_UNIFORM_VEC3);
+
+
     for(int i = 0; i < weapon->model.meshCount; i++){
         if(i == weapon->armsMeshI) continue;
 
@@ -142,7 +160,14 @@ void drawWeapon(Weapon *weapon, Camera3D camera){
 
 void unloadWeapon(Weapon *weapon){
     UnloadModelAnimations(weapon->animations, weapon->animationsCount);
+    
+    for(int i = 0; i <weapon->model.materialCount; i++){
+        weapon->model.materials[i].shader.id = 0;
+        weapon->model.materials[i].shader.locs = NULL;
+    }
+    
     UnloadModel(weapon->model);
+    UnloadShader(weapon->shader);
 }
 
 

@@ -13,8 +13,8 @@ void main(){
     vec3 normal = normalize(fragNormal);
 
     vec3 lihgtDirection = normalize(vec3(0.4, 0.9, -0.4));
-    vec3 lColor = vec3(0.55, 0.72, 0.75);
-    vec3 ambientColor = vec3(0.05, 0.06, 0.08);
+    vec3 lColor = vec3(0.55, 0.62, 0.50);
+    vec3 ambientColor = vec3(0.10, 0.10, 0.10);
 
 
     float diffuse = max(dot(normal, lihgtDirection), 0.0);

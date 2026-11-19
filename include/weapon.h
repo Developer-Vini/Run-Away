@@ -8,15 +8,14 @@ typedef struct {
     Vector3 offsetFromCamera;
     Vector3 correctionAngles;
     float scale;
-    
-
     ModelAnimation *animations;
     int animationsCount;
     int currentAnimation;
-
     int armsMeshI;
-
     int currentFrame;
+
+    Shader shader;
+    int vPositionLocation;
 } Weapon;
 
 Weapon createWeapon(void);
