@@ -12,17 +12,23 @@ typedef struct {
     int animationsCount;
     int currentAnimation;
     int armsMeshI;
-    int currentFrame;
+    float currentFrame;
 
     Shader shader;
     int vPositionLocation;
+
+
+    int magazineAmmo;
+    int reserveAmmo;
+    float fireColdown;
 } Weapon;
 
 Weapon createWeapon(void);
 void updateWeapon(Weapon *weapon);
 void drawWeapon(Weapon *weapon, Camera3D camera);
 void unloadWeapon(Weapon *weapon);
-
 void updateWeaponAnimation(Weapon *weapon);
+
+void updateWeaponFiring(Weapon *weapon);
 
 #endif
