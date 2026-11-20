@@ -4,7 +4,7 @@ This is a game where your objective is to escape this endless place, but to do s
 
 The game's map is generated with some elevation changes, but I'll change that in the future, I'll make it flat to add houses more easily.
 
-![alt text](image.png)
+![alt text](assets/images/image.png)
 
 # Controls
 
