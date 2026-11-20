@@ -7,5 +7,5 @@ typedef enum {
 } DimensionsType;
 
 void initDimension(void);
-
+void changeDimension(void);
 #endif
