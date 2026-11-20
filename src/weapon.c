@@ -250,3 +250,33 @@ void updateWeaponAnimation(Weapon *weapon){
     UpdateModelAnimation(weapon->model, weapon->animations[weapon->currentAnimation], weapon->currentFrame);
 
 }
+
+void updateWeaponFiring(Weapon *weapon){
+    if(weapon->fireColdown > 0.0f){
+        weapon->fireColdown -= GetFrameTime();
+    }
+
+    if(isReloading(weapon)) return false;
+
+    bool wantsReload = IsKeyPressed(KEY_R);
+    bool wantsFire = IS_AUTO ? IsMouseButtonDown(MOUSE_BUTTON_LEFT) : IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+
+    if(wantsFire && weapon->magazineAmmo < MAGAZINE_SIZE && weapon->reserveAmmo > 0){
+        playAnimation(weapon, weapon->magazineAmmo == 0 ? ANIMATION_RELOAD_EMPTY : ANIMATION_RELOAD_PARTIAL);
+        return false;
+    }
+
+    if(weapon->magazineAmmo <= 0){
+        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+            playSound(weapon->emptySound);
+            weapon->fireColdown = 0.3f;
+        }
+        return false;
+    }
+
+    weapon->magazineAmmo--;
+    weapon->fireColdown = 60.0f / ROUND_PER_MINUTE;
+    playAnimation(weapon, ANIMATION_FIRE);
+    playSound(weapon->shotSound);
+    return true;
+}
