@@ -90,7 +90,8 @@ Weapon createWeapon(void){
     weapon.magazineAmmo = MAGAZINE_SIZE;
     weapon.reserveAmmo = STARTING_RESERVE_AMMO;
     weapon.shotSound = LoadSound("assets/sounds/tiro.mp3");
-    weapon.emptySound = LoadSound("assets/sounds/tiro.mp3");
+    weapon.emptySound = LoadSound("assets/sounds/sound.wav");
+    weapon.rechargeSound = LoadSound("assets/sounds/re.mp3");
 
     return weapon;
 }
@@ -212,6 +213,7 @@ void unloadWeapon(Weapon *weapon){
 
     UnloadSound(weapon->shotSound);
     UnloadSound(weapon->emptySound);
+    UnloadSound(weapon->rechargeSound);
 }
 
 
@@ -268,9 +270,10 @@ bool updateWeaponFiring(Weapon *weapon){
 
     if(wantsReload && weapon->magazineAmmo < MAGAZINE_SIZE && weapon->reserveAmmo > 0){
         playAnimation(weapon, weapon->magazineAmmo == 0 ? ANIMATION_RELOAD_EMPTY : ANIMATION_RELOAD_PARTIAL);
+        playSound(weapon->rechargeSound);
         return false;
     }
-
+    
     if(!wantsFire || weapon->fireColdown > 0.0f){
         return false;
     }

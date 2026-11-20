@@ -25,6 +25,7 @@ typedef struct {
 
     Sound shotSound;
     Sound emptySound;
+    Sound rechargeSound;
 } Weapon;
 
 Weapon createWeapon(void);
