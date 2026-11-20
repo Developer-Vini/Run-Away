@@ -5,15 +5,26 @@ This is a game where your objective is to escape this endless place, but to do s
 The game's map is generated with some elevation changes, but I'll change that in the future, I'll make it flat to add houses more easily.
 
 ![alt text](image.png)
-![alt text](image-1.png)
 
 # Controls
 
-W = Walk forward
-S = Walk backward
-A = Walk left
-D = Walk right
+- W = Walk forward
+- S = Walk backward
+- A = Walk left
+- D = Walk right
+- R = Reload weapon
+- Mouse = Camera Movement
+- Mouse Left = Shoot
 
-To test the project (I don't recommend it, it's not very good, but just open game.exe)
+What did I add after the last ship?
 
-Please note, this is not the final version; I'm still working on the game. This is just to keep track of the hours :)
+- Weapon reloading system
+- Shooting system
+- Sound system
+- Door to enter another dimension (I'm still considering this possibility, whether it's viable or not, but I believe I will do it)
+
+How to Play?
+
+To play the game, simply go to the releases and download the latest version.
+
+The only way to test the game is by doing this. I will add a compilation file in the future, but for now, I'm focusing primarily on the game itself.

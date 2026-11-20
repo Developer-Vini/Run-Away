@@ -3,6 +3,7 @@
 #include "../include/world.h"
 #include "../include/chunk.h"
 #include "../include/weapon.h"
+#include "../include/door.h"
 
 int main(void){
 
@@ -15,10 +16,12 @@ int main(void){
     DisableCursor();
     SetTargetFPS(60);
 
+    Door door;
     GameCamera camera;
-    createCamera(&camera, (Vector3){0.0f, 1.7f, 5.0f}, (Vector3){0.0f, 1.7f, 0.0f});
-
     Weapon weapon = createWeapon();
+
+    createCamera(&camera, (Vector3){0.0f, 1.7f, 5.0f}, (Vector3){0.0f, 1.7f, 0.0f});
+    initDoor(&door);
 
     while(!WindowShouldClose()){
         
@@ -28,16 +31,20 @@ int main(void){
         updateWeaponAnimation(&weapon);
         updateTerrainShader(camera.camera.position);
         updateWeapon(&weapon);
+        updateDoor(&door, camera.camera.position);
         bool dFire = updateWeaponFiring(&weapon);
-        updateWeaponAnimation(&weapon);
         (void)dFire;
         BeginDrawing();
             ClearBackground((Color){10, 14, 17, 255});
             initCamera(&camera);
-                drawWorld();
+            drawWorld();
+            drawDoor(&door);
                 drawWeapon(&weapon, camera.camera);
             finishCamera();
                 DrawFPS(10,10);
+                if(door.canInteract){
+                    DrawText("PRESS F TO INTERACT", 20, 60, 23, YELLOW);
+                }
         EndDrawing();
     }
 
@@ -45,6 +52,7 @@ int main(void){
     unloadWorld();
     unloadTerrainShader();
     unloadTerrainTexture();
+    unloadDoor(&door);
     CloseWindow();
     return 0;
 

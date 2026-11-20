@@ -3,7 +3,7 @@
 
 void initDoor(Door *door){
     door->position = (Vector3){
-        0.0f, 0.0f, 7.0f
+        0.0f, 0.0f, -29.0f
     };
     door->scale = (Vector3){
         1.0f, 1.0f, 1.0f 
@@ -23,7 +23,7 @@ void updateDoor(Door *door, Vector3 playerPosition){
 
     door->canInteract = distance <= door->interactionRadius;
 
-    if(door->canInteract && IsKeyPressed(KEY_E)){
+    if(door->canInteract && IsKeyPressed(KEY_F)){
         changeDimension();
     }
 }
