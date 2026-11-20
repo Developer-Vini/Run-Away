@@ -2,6 +2,7 @@
 #define DOOR_H
 
 #include "raylib.h"
+#include "raymath.h"
 
 typedef struct{
     Vector3 position;
@@ -11,5 +12,6 @@ typedef struct{
 } Door;
 
 void initDoor(Door *door);
+void updateDoor(Door *door, Vector3 playerPosition);
 
 #endif
