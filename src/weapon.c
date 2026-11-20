@@ -23,7 +23,7 @@ static bool isReloading(const Weapon *weapon){
 
 static void playAnimation(Weapon *weapon, int animationIndex){
     weapon->currentAnimation = animationIndex;
-    weapon->currentAnimation = 0.0f;
+    weapon->currentFrame = 0.0f;
 }
 
 static void finishedLoad(Weapon *weapon){
