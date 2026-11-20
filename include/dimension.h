@@ -6,5 +6,6 @@ typedef enum {
     INFECTED_DIMENSION
 } DimensionsType;
 
+void initDimension(void);
 
 #endif
