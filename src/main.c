@@ -8,17 +8,15 @@ int main(void){
 
     InitWindow( 1280, 720, "test telça");
 
+    InitAudioDevice();
     loadTerrainTexture();
     loadTerrainShader();
 
     DisableCursor();
     SetTargetFPS(60);
 
-    
     GameCamera camera;
-
     createCamera(&camera, (Vector3){0.0f, 1.7f, 5.0f}, (Vector3){0.0f, 1.7f, 0.0f});
-
 
     Weapon weapon = createWeapon();
 
@@ -30,6 +28,9 @@ int main(void){
         updateWeaponAnimation(&weapon);
         updateTerrainShader(camera.camera.position);
         updateWeapon(&weapon);
+        bool dFire = updateWeaponFiring(&weapon);
+        updateWeaponAnimation(&weapon);
+        (void)dFire;
         BeginDrawing();
             ClearBackground((Color){10, 14, 17, 255});
             initCamera(&camera);

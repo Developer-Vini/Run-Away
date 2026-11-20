@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 
+
 #define ANIMATION_IDLE 0
 #define ANIMATION_WALK 1
 #define ANIMATION_FIRE 4
@@ -215,43 +216,45 @@ void unloadWeapon(Weapon *weapon){
 void updateWeaponAnimation(Weapon *weapon){
     if(weapon->animationsCount == 0) return;
 
-    bool isBusy = weapon->currentAnimation == ANIMATION_FIRE || weapon->currentAnimation == ANIMATION_RELOAD;
+    //bool isBusy = weapon->currentAnimation == ANIMATION_FIRE || weapon->currentAnimation == ANIMATION_RELOAD;
     
-    if(!isBusy && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-        weapon->currentAnimation = ANIMATION_FIRE;
-        weapon->currentFrame = 0;
-    }else if(!isBusy && IsKeyPressed(KEY_R)){
-        weapon->currentAnimation = ANIMATION_RELOAD;
-        weapon->currentFrame = 0;
-    }
+    weapon->currentFrame += GetFrameTime() * ANIMATION_FRAMES_PER_SECOND;
+    int keyFrameCount = weapon->animations[weapon->currentAnimation].keyframeCount;
 
-    ModelAnimation animation = weapon->animations[weapon->currentAnimation];
-    weapon->currentFrame++;
 
-    if(weapon->currentFrame >= animation.keyframeCount){
-        weapon->currentFrame = 0;
+    bool isMoving = IsKeyDown(KEY_W) || IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D);
+    int idleOrWalk = isMoving ? ANIMATION_WALK : ANIMATION_IDLE;
 
-        bool isMoving = IsKeyDown(KEY_W) || IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D);
 
-        weapon->currentAnimation = isMoving ? ANIMATION_WALK : ANIMATION_IDLE;
-    }
+    if(weapon->currentFrame >= keyFrameCount){
+        if(isReloading(weapon)){
+            finishedLoad(weapon);
+        }
 
-    if(!isBusy){
-        bool isMoving = IsKeyDown(KEY_W) || IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D);
+        bool isLooping = weapon->currentAnimation == ANIMATION_IDLE || weapon->currentAnimation == ANIMATION_WALK;
+        
 
-        int wanted = isMoving ? ANIMATION_WALK : ANIMATION_IDLE;
-        if(weapon->currentAnimation != wanted){
-            weapon->currentAnimation = wanted;
-            weapon->currentFrame = 0;
+        if(isLooping){
+            weapon->currentFrame = fmod(weapon->currentFrame, (float)keyFrameCount);
+        }else{
+            playAnimation(weapon, idleOrWalk);
         }
     }
+
+    bool isIdleOrWalk = weapon->currentAnimation == ANIMATION_IDLE || weapon->currentAnimation == ANIMATION_WALK;
+
+    if(isIdleOrWalk && weapon->currentAnimation != ANIMATION_IDLE){
+        playAnimation(weapon, idleOrWalk);
+    }
+
+
 
 
     UpdateModelAnimation(weapon->model, weapon->animations[weapon->currentAnimation], weapon->currentFrame);
 
 }
 
-void updateWeaponFiring(Weapon *weapon){
+bool updateWeaponFiring(Weapon *weapon){
     if(weapon->fireColdown > 0.0f){
         weapon->fireColdown -= GetFrameTime();
     }
@@ -261,7 +264,7 @@ void updateWeaponFiring(Weapon *weapon){
     bool wantsReload = IsKeyPressed(KEY_R);
     bool wantsFire = IS_AUTO ? IsMouseButtonDown(MOUSE_BUTTON_LEFT) : IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
 
-    if(wantsFire && weapon->magazineAmmo < MAGAZINE_SIZE && weapon->reserveAmmo > 0){
+    if(wantsReload && weapon->magazineAmmo < MAGAZINE_SIZE && weapon->reserveAmmo > 0){
         playAnimation(weapon, weapon->magazineAmmo == 0 ? ANIMATION_RELOAD_EMPTY : ANIMATION_RELOAD_PARTIAL);
         return false;
     }

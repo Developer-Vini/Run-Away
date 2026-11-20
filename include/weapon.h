@@ -2,6 +2,7 @@
 #define WEAPON_H
 
 #include "../include/raylib.h"
+#include <stdbool.h>
 
 typedef struct {
     Model model;
@@ -32,6 +33,6 @@ void drawWeapon(Weapon *weapon, Camera3D camera);
 void unloadWeapon(Weapon *weapon);
 void updateWeaponAnimation(Weapon *weapon);
 
-void updateWeaponFiring(Weapon *weapon);
+bool updateWeaponFiring(Weapon *weapon);
 
 #endif
