@@ -10,5 +10,7 @@ typedef struct{
     /* data */
 } Door;
 
+void initDoor(Door *door)
+
 
 #endif
