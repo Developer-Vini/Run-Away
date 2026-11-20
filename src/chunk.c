@@ -171,7 +171,7 @@ float getTerrainH(float worldX, float worldZ){
     return relief * zone + detail;
 }
 void loadTerrainTexture(void){
-    terrainTexture = LoadTexture("assets/textures/tiles_floor_1.png");
+    terrainTexture = LoadTexture("assets/tiles_floor_1.png");
     GenTextureMipmaps(&terrainTexture);
     SetTextureFilter(terrainTexture, TEXTURE_FILTER_TRILINEAR);
     SetTextureWrap(terrainTexture, TEXTURE_WRAP_REPEAT);
