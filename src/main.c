@@ -4,6 +4,7 @@
 #include "../include/chunk.h"
 #include "../include/weapon.h"
 #include "../include/door.h"
+#include "../include/dimension.h"
 
 int main(void){
 
@@ -32,6 +33,7 @@ int main(void){
         updateTerrainShader(camera.camera.position);
         updateWeapon(&weapon);
         updateDoor(&door, camera.camera.position);
+        updateDimension();
         bool dFire = updateWeaponFiring(&weapon);
         (void)dFire;
         BeginDrawing();
@@ -41,10 +43,12 @@ int main(void){
             drawDoor(&door);
                 drawWeapon(&weapon, camera.camera);
             finishCamera();
+                DrawText(TextFormat("%d / %d", weapon.magazineAmmo, weapon.reserveAmmo), GetScreenWidth() - 120, GetScreenHeight() - 26, 30, RAYWHITE);
                 DrawFPS(10,10);
                 if(door.canInteract){
                     DrawText("PRESS F TO INTERACT", 20, 60, 23, YELLOW);
                 }
+                drawDimensionTransition();
         EndDrawing();
     }
 

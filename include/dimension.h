@@ -1,6 +1,8 @@
 #ifndef DIMENSION_H
 #define DIMENSION_H
 
+#include "raylib.h"
+
 typedef enum {
     INIT_DIMENSION,
     INFECTED_DIMENSION
@@ -8,6 +10,10 @@ typedef enum {
 
 void initDimension(void);
 void changeDimension(void);
+
+void updateDimension(void);
+void drawDimensionTransition(void);
+bool isDimensionTras(void);
 
 DimensionsType getCurrentDimension(void);
 #endif

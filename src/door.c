@@ -23,14 +23,14 @@ void updateDoor(Door *door, Vector3 playerPosition){
 
     door->canInteract = distance <= door->interactionRadius;
 
-    if(door->canInteract && IsKeyPressed(KEY_F)){
+    if(door->canInteract && IsKeyPressed(KEY_F) && !isDimensionTras()){
         changeDimension();
     }
 }
 
 void drawDoor(Door *door){
     if(!door->loaded) return;
-    DrawModelEx(door->model, door->position, (Vector3){0.0f, 1.0f, 0.0f}, door->rotationAngle, door->scale, WHITE);
+    DrawModelEx(door->model, door->position, (Vector3){0.0f, 1.0f, 2.0f}, door->rotationAngle, door->scale, WHITE);
 }
 
 void unloadDoor(Door *door){
