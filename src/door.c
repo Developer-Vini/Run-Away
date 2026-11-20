@@ -7,8 +7,17 @@ void initDoor(Door *door){
     door->position = (Vector3){
         0.0f, 0.0f, 7.0f
     };
+    door->scale = (Vector3){
+        1.0f, 1.0f, 1.0f 
+    };
+
+    door->rotationAngle = 0.0f;
     door->interactionRadius = 2.0f;
     door->canInteract = false;
+
+    door->model = LoadModel("assets/3Dmodels/door_2_loose.glb");
+
+    door->loaded = door->model.meshCount > 0;
 }
 
 void updateDoor(Door *door, Vector3 playerPosition){
