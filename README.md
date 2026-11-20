@@ -16,6 +16,8 @@ The game's map is generated with some elevation changes, but I'll change that in
 - Mouse = Camera Movement
 - Mouse Left = Shoot
 
+- F1 = Debug Mode Weapon
+
 What did I add after the last ship?
 
 - Weapon reloading system
