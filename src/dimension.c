@@ -14,3 +14,7 @@ void changeDimension(void){
         currentDimension = INIT_DIMENSION;
     }
 }
+
+DimensionsType getCurrentDimension(void){
+    return currentDimension;
+}

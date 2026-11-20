@@ -8,4 +8,6 @@ typedef enum {
 
 void initDimension(void);
 void changeDimension(void);
+
+DimensionsType getCurrentDimension(void);
 #endif
