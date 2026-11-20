@@ -3,6 +3,7 @@
 static DimensionsType currentDimension = INIT_DIMENSION;
 static float transitionAlpha = 0.0f;
 static bool transition = false;
+static bool dimensionJustChange = false;
 static bool changig = false;
 
 void initDimension(void){
@@ -22,25 +23,23 @@ void changeDimension(void){
 void updateDimension(void){
     if(!transition) return;
 
-    transitionAlpha += GetFrameTime() * 1.4f;
+    float  fadeStep = GetFrameTime() * 1.4f;
 
-    if(transitionAlpha >= 1.0f && !changig){
-        transitionAlpha = 1.0f;
-        if(currentDimension == INIT_DIMENSION){
-            currentDimension = INFECTED_DIMENSION;
-        }else{
-            currentDimension = INIT_DIMENSION;
+    if(!changig){
+        transitionAlpha += fadeStep;
+        if(transitionAlpha >= 1.0f){
+            transitionAlpha = 1.0f;
+            currentDimension = (currentDimension == INIT_DIMENSION) ? INFECTED_DIMENSION : INIT_DIMENSION;
+            changig = true;
+            dimensionJustChange = true;
         }
-
-        changig = true;
-    }
-
-    if(changig){
-        transitionAlpha -= GetFrameTime() * 1.4f;
+    } else{
+        transitionAlpha -= fadeStep;
         if(transitionAlpha <= 0.0f){
             transitionAlpha = 0.0f;
-            transition = false;
+            //currentDimension = (currentDimension == INIT_DIMENSION) ? INFECTED_DIMENSION : INIT_DIMENSION;
             changig = false;
+            dimensionJustChange =false;
         }
     }
 }
@@ -51,6 +50,11 @@ void drawDimensionTransition(void){
 
 bool isDimensionTras(void){
         return transition;
+}
+bool didDimensionJustChanged(void){
+    bool result = dimensionJustChange;
+    dimensionJustChange = false;
+    return result;
 }
 DimensionsType getCurrentDimension(void){
     return currentDimension;
