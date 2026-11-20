@@ -1,8 +1,6 @@
 #include "../include/door.h"
 #include "../include/dimension.h"
 
-#include <math.h>
-
 void initDoor(Door *door){
     door->position = (Vector3){
         0.0f, 0.0f, 7.0f
@@ -27,5 +25,17 @@ void updateDoor(Door *door, Vector3 playerPosition){
 
     if(door->canInteract && IsKeyPressed(KEY_E)){
         changeDimension();
+    }
+}
+
+void drawDoor(Door *door){
+    if(!door->loaded) return;
+    DrawModelEx(door->model, door->position, (Vector3){0.0f, 1.0f, 0.0f}, door->rotationAngle, door->scale, WHITE);
+}
+
+void unloadDoor(Door *door){
+    if(door->loaded){
+        UnloadModel(door->model);
+        door->loaded = false;
     }
 }
