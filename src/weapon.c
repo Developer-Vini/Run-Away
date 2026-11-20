@@ -22,6 +22,8 @@ static bool isReloading(const Weapon *weapon){
 }
 
 static void playAnimation(Weapon *weapon, int animationIndex){
+    if(animationIndex < 0 || animationIndex >= weapon->animationsCount) return;
+
     weapon->currentAnimation = animationIndex;
     weapon->currentFrame = 0.0f;
 }
@@ -243,7 +245,7 @@ void updateWeaponAnimation(Weapon *weapon){
 
     bool isIdleOrWalk = weapon->currentAnimation == ANIMATION_IDLE || weapon->currentAnimation == ANIMATION_WALK;
 
-    if(isIdleOrWalk && weapon->currentAnimation != ANIMATION_IDLE){
+    if(isIdleOrWalk && weapon->currentAnimation != idleOrWalk){
         playAnimation(weapon, idleOrWalk);
     }
 
@@ -266,6 +268,10 @@ bool updateWeaponFiring(Weapon *weapon){
 
     if(wantsReload && weapon->magazineAmmo < MAGAZINE_SIZE && weapon->reserveAmmo > 0){
         playAnimation(weapon, weapon->magazineAmmo == 0 ? ANIMATION_RELOAD_EMPTY : ANIMATION_RELOAD_PARTIAL);
+        return false;
+    }
+
+    if(!wantsFire || weapon->fireColdown > 0.0f){
         return false;
     }
 
