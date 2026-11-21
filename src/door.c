@@ -19,7 +19,7 @@ void initDoor(Door *door){
 
     door->loaded = door->model.meshCount > 0;
 
-    door->isUnlocked = false;
+    door->isUnlocked = true;
 }
 
 void updateDoor(Door *door, Vector3 playerPosition){

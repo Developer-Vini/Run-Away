@@ -10,4 +10,7 @@ typedef  enum {
 MenuAction updateMenu(void);
 void drawMenu(void);
 
+void initMenu(void);
+void unloadModel(void);
+
 #endif

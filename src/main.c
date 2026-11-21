@@ -32,8 +32,8 @@ int main(void){
     createCamera(&camera, (Vector3){0.0f, 1.7f, 5.0f}, (Vector3){0.0f, 1.7f, 0.0f});
     initDoor(&door);
 
-    setDimension(INFECTED_DIMENSION);
-
+    //setDimension(INFECTED_DIMENSION);
+    initDimension();
     GameState gameState = GAME_STATE_MENU;
     bool shouldQuit = false;
 

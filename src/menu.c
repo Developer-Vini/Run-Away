@@ -10,10 +10,13 @@
 static const char *buttonLabels[BUTTON_COUNT] = { "Play", "Exit" };
 
 static Rectangle getButton(int index){
+    float totalH = BUTTON_COUNT * BUTTON_HEIGHT + (BUTTON_COUNT - 1) * BUTTON_SPACING;
+    
     float x = (GetScreenHeight() - BUTTON_WIDTH)  / 2.0f;
-    float y = (GetScreenHeight() / 2.0f + index * (BUTTON_HEIGHT + BUTTON_SPACING));
+    float y = (GetScreenHeight() + 100.0f - totalH) /2.0f;
+
     return (Rectangle){
-        x, y, BUTTON_WIDTH, BUTTON_HEIGHT
+        x, y + index * (BUTTON_HEIGHT + BUTTON_SPACING), BUTTON_WIDTH, BUTTON_HEIGHT
     };
 }
 
@@ -33,7 +36,7 @@ MenuAction updateMenu(void){
     }
 }
 void drawMenu(void){
-    ClearBackground((Color){10, 14, 17, 255});
+    //ClearBackground((Color){10, 14, 17, 255});
 
     const char *title = "Run Away";
     int titleSize = 64;
