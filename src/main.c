@@ -28,12 +28,20 @@ int main(void){
         
         updateCamera(&camera);
         snapCameraToGround(&camera, 1.7f);
+        updateDimension();
+        if(didDimensionJustChanged()){
+            resetWorld();
+            Vector3 spaw = (getCurrentDimension() == INFECTED_DIMENSION) ? (Vector3){0.0f, 1.7f, 0.0f} : (Vector3){0.0f, 1.7f, -26.0f};
+            camera.camera.position = spaw;
+            camera.camera.target = (Vector3){
+                spaw.x, spaw.y, spaw.z + 1.0f
+            };
+        }
         updateWorld(camera.camera.position);
         updateWeaponAnimation(&weapon);
         updateTerrainShader(camera.camera.position);
         updateWeapon(&weapon);
         updateDoor(&door, camera.camera.position);
-        updateDimension();
         bool dFire = updateWeaponFiring(&weapon);
         (void)dFire;
         BeginDrawing();

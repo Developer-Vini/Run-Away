@@ -8,4 +8,6 @@ void updateWorld(Vector3 playerPosition);
 void drawWorld(void);
 void unloadWorld(void);
 
+void resetWorld(void);
+
 #endif

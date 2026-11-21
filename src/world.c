@@ -55,7 +55,12 @@ void unloadWorld(void){
         for(int j = 0; j < GRID_SIZE; j++){
             if(isLoaded[i][j]){
                 unloadChunk(&loadedChuncks[i][j]);
+                isLoaded[i][j] = false;
             }
         }
     }
+}
+
+void resetWorld(void){
+    unloadWorld();
 }

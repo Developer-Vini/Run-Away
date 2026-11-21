@@ -18,6 +18,8 @@ void changeDimension(void){
 
     transition = true;
     changig = false;
+
+    //TraceLog(LOG_INFO, "changeDimension chamado");
 }
 
 void updateDimension(void){
@@ -32,6 +34,8 @@ void updateDimension(void){
             currentDimension = (currentDimension == INIT_DIMENSION) ? INFECTED_DIMENSION : INIT_DIMENSION;
             changig = true;
             dimensionJustChange = true;
+
+            //TraceLog(LOG_INFO, "dimensao trocada para %d", currentDimension);
         }
     } else{
         transitionAlpha -= fadeStep;
@@ -39,7 +43,9 @@ void updateDimension(void){
             transitionAlpha = 0.0f;
             //currentDimension = (currentDimension == INIT_DIMENSION) ? INFECTED_DIMENSION : INIT_DIMENSION;
             changig = false;
+            transition = false;
             dimensionJustChange =false;
+            //TraceLog(LOG_INFO, "transicao terminou");
         }
     }
 }
