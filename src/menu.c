@@ -40,19 +40,22 @@ void unloadMenu(void){
 }
 
 MenuAction updateMenu(void){
-    if(IsKeyPressed(KEY_ENTER)) return MENU_ACTION_PLAY;
+    Vector2 mouse = GetMousePosition();
 
-    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-        Vector2 mouse = GetMousePosition();
-        if(CheckCollisionPointRec(mouse, getButton(0))){
-            return MENU_ACTION_PLAY;
-        }
-        if(CheckCollisionPointRec(mouse, getButton(1))){
-            return MENU_ACTION_QUIT;
-        }
-
+    if(IsKeyPressed(KEY_ENTER)){
+        return MENU_ACTION_PLAY;
+    }
+    if(!IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){    
         return MENU_ACTION_NONE;
     }
+    if(CheckCollisionPointRec(mouse, getButton(0))){
+        return MENU_ACTION_PLAY;
+    }
+    if(CheckCollisionPointRec(mouse, getButton(1))){
+        return MENU_ACTION_QUIT;
+    }
+
+    return MENU_ACTION_NONE;
 }
 void drawMenu(void){
     //ClearBackground((Color){10, 14, 17, 255});
