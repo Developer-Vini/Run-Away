@@ -29,7 +29,7 @@ static Rectangle getButton(int index){
 
 void initMenu(void){
     menuBackground = LoadTexture("assets/images/background.png");
-    menuLoaded = IsTextureValid(menuBackground)
+    menuLoaded = IsTextureValid(menuBackground);
 }
 
 MenuAction updateMenu(void){
