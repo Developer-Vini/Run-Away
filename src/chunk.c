@@ -147,6 +147,14 @@ void generateChunkTerrain(Chunk *chunk){
 }
 
 float getTerrainH(float worldX, float worldZ){
+    if(getCurrentDimension() == INFECTED_DIMENSION){
+        return 0.0f;
+    }
+
+    getHillsH(worldX, worldZ);
+
+}
+float getHillsH(float worldX, float worldZ){
 
     if(getCurrentDimension() == INFECTED_DIMENSION){
         return 0.0f;
