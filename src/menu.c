@@ -32,6 +32,13 @@ void initMenu(void){
     menuLoaded = IsTextureValid(menuBackground);
 }
 
+void unloadMenu(void){
+    if(menuLoaded){
+        UnloadTexture(menuBackground);
+        menuLoaded = false;
+    }
+}
+
 MenuAction updateMenu(void){
     if(IsKeyPressed(KEY_ENTER)) return MENU_ACTION_PLAY;
 
