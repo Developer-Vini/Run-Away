@@ -27,6 +27,11 @@ static Rectangle getButton(int index){
     };
 }
 
+void initMenu(void){
+    menuBackground = LoadTexture("assets/images/background.png");
+    menuLoaded = IsTextureValid(menuBackground)
+}
+
 MenuAction updateMenu(void){
     if(IsKeyPressed(KEY_ENTER)) return MENU_ACTION_PLAY;
 
