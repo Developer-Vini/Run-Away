@@ -237,3 +237,7 @@ void updateTerrainShader(Vector3 cameraPosition){
     };
     SetShaderValue(terrainShader, viewPositionLocation, position, SHADER_UNIFORM_VEC3);
 }
+
+Shader getTerrainShader(void){
+    return terrainShader;
+}
