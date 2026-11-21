@@ -65,3 +65,6 @@ bool didDimensionJustChanged(void){
 DimensionsType getCurrentDimension(void){
     return currentDimension;
 }
+void setDimension(DimensionsType dimension){
+    currentDimension = dimension;
+}

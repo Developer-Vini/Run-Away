@@ -16,5 +16,7 @@ void drawDimensionTransition(void);
 bool isDimensionTras(void);
 bool didDimensionJustChanged(void);
 
+void setDimension(DimensionsType dimension);
+
 DimensionsType getCurrentDimension(void);
 #endif

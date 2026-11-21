@@ -37,6 +37,7 @@ int main(void){
                 spaw.x, spaw.y, spaw.z + 1.0f
             };
         }
+        setDimension(INFECTED_DIMENSION);
         updateWorld(camera.camera.position);
         updateWeaponAnimation(&weapon);
         updateTerrainShader(camera.camera.position);
