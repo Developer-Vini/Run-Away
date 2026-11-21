@@ -4,6 +4,7 @@
 #include "raylib.h"
 #include "raymath.h"
 
+
 typedef struct{
     Model model;
     Vector3 scale;
@@ -12,6 +13,8 @@ typedef struct{
     float interactionRadius;
     bool canInteract;
     bool loaded;
+
+    bool isUnlocked;
     /* data */
 } Door;
 

@@ -17,12 +17,15 @@ int main(void){
     DisableCursor();
     SetTargetFPS(60);
 
-    Door door;
+    Door door = {0};
+
     GameCamera camera;
     Weapon weapon = createWeapon();
 
     createCamera(&camera, (Vector3){0.0f, 1.7f, 5.0f}, (Vector3){0.0f, 1.7f, 0.0f});
     initDoor(&door);
+
+    setDimension(INFECTED_DIMENSION);
 
     while(!WindowShouldClose()){
         
@@ -37,14 +40,15 @@ int main(void){
                 spaw.x, spaw.y, spaw.z + 1.0f
             };
         }
-        setDimension(INFECTED_DIMENSION);
         updateWorld(camera.camera.position);
-        updateWeaponAnimation(&weapon);
         updateTerrainShader(camera.camera.position);
-        updateWeapon(&weapon);
         updateDoor(&door, camera.camera.position);
+        updateWeapon(&weapon);
+        updateWeaponAnimation(&weapon);
+
         bool dFire = updateWeaponFiring(&weapon);
         (void)dFire;
+
         BeginDrawing();
             ClearBackground((Color){10, 14, 17, 255});
             initCamera(&camera);
@@ -55,7 +59,7 @@ int main(void){
                 DrawText(TextFormat("%d / %d", weapon.magazineAmmo, weapon.reserveAmmo), GetScreenWidth() - 120, GetScreenHeight() - 26, 30, RAYWHITE);
                 DrawFPS(10,10);
                 if(door.canInteract){
-                    DrawText("PRESS F TO INTERACT", 20, 60, 23, YELLOW);
+                    DrawText(door.isUnlocked ? "[F] Open" : "Locked", 20, 60, 23, YELLOW);
                 }
                 drawDimensionTransition();
         EndDrawing();
