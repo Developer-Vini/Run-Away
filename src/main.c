@@ -5,6 +5,12 @@
 #include "../include/weapon.h"
 #include "../include/door.h"
 #include "../include/dimension.h"
+#include "../include/menu.h"
+
+typedef enum {
+    GAME_STATE_MENU,
+    GAME_STATE_PLAIYING
+}GameState;
 
 int main(void){
 
@@ -14,7 +20,8 @@ int main(void){
     loadTerrainTexture();
     loadTerrainShader();
 
-    DisableCursor();
+    //DisableCursor();
+    SetExitKey(KEY_NULL);
     SetTargetFPS(60);
 
     Door door = {0};
@@ -27,8 +34,30 @@ int main(void){
 
     setDimension(INFECTED_DIMENSION);
 
-    while(!WindowShouldClose()){
-        
+    GameState gameState = GAME_STATE_MENU;
+    bool shouldQuit = false;
+
+    while(!WindowShouldClose() && !shouldQuit){
+        if(gameState == GAME_STATE_MENU){
+            MenuAction action = updateMenu();
+            if(action == MENU_ACTION_PLAY){
+                gameState = GAME_STATE_PLAIYING;
+                DisableCursor();
+            }else if(action == MENU_ACTION_QUIT){
+                shouldQuit = true;
+            }
+            BeginDrawing();
+                drawMenu();
+            EndDrawing();
+            continue;
+        }
+
+        if(IsKeyPressed(KEY_ESCAPE)){
+            gameState = GAME_STATE_MENU;
+            EnableCursor();
+            continue;
+        }
+
         updateCamera(&camera);
         snapCameraToGround(&camera, 1.7f);
         updateDimension();

@@ -7,10 +7,7 @@
 #define BUTTON_COUNT 2
 
 
-static const char *buttonLabels[BUTTON_COUNT] = {
-    'Play',
-    'Exit'
-};
+static const char *buttonLabels[BUTTON_COUNT] = { "Play", "Exit" };
 
 static Rectangle getButton(int index){
     float x = (GetScreenHeight() - BUTTON_WIDTH)  / 2.0f;
