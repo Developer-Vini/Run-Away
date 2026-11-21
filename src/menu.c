@@ -1,22 +1,29 @@
 #include "../include/menu.h"
 #include "../include/raylib.h"
 
-#define BUTTON_WIDTH 300.0f
-#define BUTTON_HEIGHT 60.0f
-#define BUTTON_SPACING 20.0f
+// #define BUTTON_WIDTH 300.0f
+// #define BUTTON_HEIGHT 60.0f
+// #define BUTTON_SPACING 20.0f
 #define BUTTON_COUNT 2
 
+static Texture2D menuBackground;
+static bool menuLoaded = false;
 
-static const char *buttonLabels[BUTTON_COUNT] = { "Play", "Exit" };
+static const char *buttonLabels[BUTTON_COUNT] = { "Play","Settings", "Exit" };
 
 static Rectangle getButton(int index){
-    float totalH = BUTTON_COUNT * BUTTON_HEIGHT + (BUTTON_COUNT - 1) * BUTTON_SPACING;
+    int W = GetScreenWidth();
+    int H = GetScreenHeight();
     
-    float x = (GetScreenHeight() - BUTTON_WIDTH)  / 2.0f;
-    float y = (GetScreenHeight() + 100.0f - totalH) /2.0f;
+    //float totalH = BUTTON_COUNT * BUTTON_HEIGHT + (BUTTON_COUNT - 1) * BUTTON_SPACING;
+    
+    float x = W * 0.09f;
+    float y = H * 0.48f + index * 65.f;
+
+    int fontSize = 28;
 
     return (Rectangle){
-        x, y + index * (BUTTON_HEIGHT + BUTTON_SPACING), BUTTON_WIDTH, BUTTON_HEIGHT
+        x, y, (float)MeasureText(buttonLabels[index], fontSize) + 25.0f, 42.0f
     };
 }
 
