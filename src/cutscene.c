@@ -110,7 +110,7 @@ bool updateCutscene(Cutscene *cutscene, GameCamera *camera){
 
 }
 
-void startCutscene(Cutscene *cutscene, GameCamera *camera){
+void startDoorCutscene(Cutscene *cutscene, GameCamera *camera){
     cutscene->timer = 0.0f;
     cutscene->active = true;
 
