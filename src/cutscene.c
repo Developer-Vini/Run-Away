@@ -13,6 +13,8 @@ void startCutscene(Cutscene *cutscene, GameCamera *camera){
     cutscene->timer = 0.0f;
     cutscene->active = true;
 
+    cutscene->type = CUTSCENE_WAKE;
+
     Vector3 direction = Vector3Subtract(camera->camera.target, camera->camera.position);
     direction.y = 0.0f;
 
@@ -105,6 +107,29 @@ bool updateCutscene(Cutscene *cutscene, GameCamera *camera){
     }
 
     return false;
+
+}
+
+void startCutscene(Cutscene *cutscene, GameCamera *camera){
+    cutscene->timer = 0.0f;
+    cutscene->active = true;
+
+    cutscene->type = CUTSCENE_WAKE;
+
+    Vector3 direction = Vector3Subtract(camera->camera.target, camera->camera.position);
+    direction.y = 0.0f;
+
+    float lenght = Vector3Length(direction);
+
+    if(lenght > 0.001f){
+        direction = Vector3Scale(direction, 1.0f /lenght);
+    }else{
+        direction = (Vector3){0.0f, 0.0f, -1.0f};
+    }   
+
+    cutscene->fowardDirection = direction;
+    cutscene->startPosition = camera->camera.position;
+
 
 }
 
