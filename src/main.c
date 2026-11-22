@@ -6,15 +6,17 @@
 #include "../include/door.h"
 #include "../include/dimension.h"
 #include "../include/menu.h"
+#include "../include/cutscene.h"
 
 typedef enum {
     GAME_STATE_MENU,
+    GAME_STATE_CUTSCENE,
     GAME_STATE_PLAIYING
 }GameState;
 
 int main(void){
 
-    InitWindow( 1280, 720, "test telça");
+    InitWindow( 1280, 720, "Run Away");
 
     InitAudioDevice();
     loadTerrainTexture();
@@ -33,6 +35,8 @@ int main(void){
     createCamera(&camera, (Vector3){0.0f, 1.7f, 5.0f}, (Vector3){0.0f, 1.7f, 0.0f});
     initDoor(&door);
 
+    Cutscene cutscene = {0};
+
     //setDimension(INFECTED_DIMENSION);
     initDimension();
     GameState gameState = GAME_STATE_MENU;
@@ -42,7 +46,8 @@ int main(void){
         if(gameState == GAME_STATE_MENU){
             MenuAction action = updateMenu();
             if(action == MENU_ACTION_PLAY){
-                gameState = GAME_STATE_PLAIYING;
+                startCutscene(&cutscene, &camera);
+                gameState = GAME_STATE_CUTSCENE;
                 DisableCursor();
             }else if(action == MENU_ACTION_QUIT){
                 shouldQuit = true;
@@ -56,6 +61,28 @@ int main(void){
         if(IsKeyPressed(KEY_ESCAPE)){
             gameState = GAME_STATE_MENU;
             EnableCursor();
+            continue;
+        }
+
+        if(gameState == GAME_STATE_CUTSCENE){
+            bool finished = updateCutscene(&cutscene, &camera);
+
+            updateWorld(camera.camera.position);
+            updateTerrainShader(camera.camera.position);
+            
+            BeginDrawing();
+                ClearBackground((Color){10, 14, 17, 255});
+            
+                initCamera(&camera);
+                    drawWorld();
+                finishCamera();
+                
+                drawCutscene(&cutscene);
+            EndDrawing();
+            if(finished){
+                gameState = GAME_STATE_PLAIYING;
+            }
+
             continue;
         }
 
