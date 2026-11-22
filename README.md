@@ -1,5 +1,6 @@
 # Run-Away
 
+![alt text](assets/images/menu.png)
 ![alt text](assets/images/image.png)
 
 # Controls
@@ -11,17 +12,9 @@
 - R = Reload weapon
 - Mouse = Camera Movement
 - Mouse Left = Shoot
-
 - F1 = Debug Mode Weapon
 
-What did I add after the last ship?
-
-- Weapon reloading system
-- Shooting system
-- Sound system
-- Door to enter another dimension (I'm still considering this possibility, whether it's viable or not, but I believe I will do it)
-
-How to Play?
+# How to Play?
 
 To play the game, simply go to the releases and download the latest version.
 
