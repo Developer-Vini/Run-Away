@@ -16,16 +16,16 @@ static bool updateDoorCutscene(Cutscene *cutscene, GameCamera *camera){
     float yaw = 0.0f;
 
     if(time < 1.5f){
-        yaw = Lerp(0.0f, 0.55f, smoothStep((time - 1.5f))); // 2.0f));
-    }else if(time >= 2.5f){
+        yaw = Lerp(0.0f, 0.55f, smoothStep((time / 1.5f))); // 2.0f));
+    }else if(time < 2.5f){
         // yaw = Lerp(0.0f, 0.45, smoothStep((time - 4.0f) / 2.0f));
         yaw = 0.55f;
-    }else if(time >= 4.5f){
+    }else if(time < 4.5f){
         yaw = Lerp(0.55f, -0.55f, smoothStep((time - 2.5f) / 2.0f));
-    }else if(time >= 5.5f){
+    }else if(time < 5.5f){
         //yaw = Lerp(0.45f, -0.45f, smoothStep((time - 8.0f) / 2.5f));
         yaw = -0.55f;
-    }else if(time >= 7.0f){
+    }else if(time < 7.0f){
         yaw = Lerp(-0.55f, 0.0f, smoothStep((time - 5.5f) / 1.5f));
     }else{
         yaw = 0.0f;
@@ -162,7 +162,7 @@ void startDoorCutscene(Cutscene *cutscene, GameCamera *camera){
     cutscene->timer = 0.0f;
     cutscene->active = true;
 
-    cutscene->type = CUTSCENE_WAKE;
+    cutscene->type = CUTSCENE_DOOR_DISCOVERY; //CUTSCENE_WAKE;
 
     Vector3 direction = Vector3Subtract(camera->camera.target, camera->camera.position);
     direction.y = 0.0f;

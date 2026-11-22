@@ -25,7 +25,7 @@ void initDoor(Door *door){
 bool updateDoor(Door *door, Vector3 playerPosition){
     if(getCurrentDimension() != INIT_DIMENSION){
         door->canInteract =  false;
-        return;
+        return false;
     }
 
     float distanceX = playerPosition.x - door->position.x;

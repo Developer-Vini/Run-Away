@@ -7,7 +7,8 @@
 #include "../include/dimension.h"
 #include "../include/menu.h"
 #include "../include/cutscene.h"
-
+#include "../include/raymath.h"
+#include <stdio.h>
 typedef enum {
     GAME_STATE_MENU,
     GAME_STATE_CUTSCENE,
@@ -28,6 +29,22 @@ int main(void){
     SetTargetFPS(60);
 
     Door door = {0};
+
+    Model house = LoadModel("assets/3Dmodels/free_abandoned_apartment.glb");
+    Vector3 housePosition = {0.0f, 0.0f, -15.0f};
+    bool houseVisible = false;
+    bool houseWorldActive = false;
+
+    printf("Mes: %d\n", house.meshCount);
+    printf("mate: %d\n", house.materialCount);
+
+    int textureM = 0;
+    for(int i = 0; i< house.materialCount; i++){
+        if(house.materials[i].maps[MATERIAL_MAP_DIFFUSE].texture.id > 0){
+            textureM++;
+        }
+        //printf("material %d Texture id: %u cor: r=%d cor: g=%d cor: b=%d cor: a=%d\n", i, map.texture.id, map.color.r, map.color.g, map.color.b, map.color.a);
+    }
 
     GameCamera camera;
     Weapon weapon = createWeapon();
@@ -67,14 +84,21 @@ int main(void){
         if(gameState == GAME_STATE_CUTSCENE){
             bool finished = updateCutscene(&cutscene, &camera);
 
-            updateWorld(camera.camera.position);
-            updateTerrainShader(camera.camera.position);
-            
+            if(!houseVisible){                
+                updateWorld(camera.camera.position);
+                updateTerrainShader(camera.camera.position);
+            }
             BeginDrawing();
                 ClearBackground((Color){10, 14, 17, 255});
             
                 initCamera(&camera);
-                    drawWorld();
+                    if(!houseWorldActive){
+                        drawWorld();
+                        drawDoor(&door);
+                    }
+                    if(houseVisible){
+                        DrawModel(house, housePosition, 1.0f, WHITE);
+                    }
                 finishCamera();
                 
                 drawCutscene(&cutscene);
@@ -87,7 +111,9 @@ int main(void){
         }
 
         updateCamera(&camera);
-        snapCameraToGround(&camera, 1.7f);
+        if(!houseWorldActive){
+            snapCameraToGround(&camera, 1.7f);
+        }
         updateDimension();
         if(didDimensionJustChanged()){
             resetWorld();
@@ -97,9 +123,31 @@ int main(void){
                 spaw.x, spaw.y, spaw.z + 1.0f
             };
         }
-        updateWorld(camera.camera.position);
-        updateTerrainShader(camera.camera.position);
-        updateDoor(&door, camera.camera.position);
+        if(!houseWorldActive){
+            updateWorld(camera.camera.position);
+            updateTerrainShader(camera.camera.position);
+        }
+            
+        if(!houseWorldActive && updateDoor(&door, camera.camera.position)){
+            Vector3 direction = Vector3Subtract(camera.camera.target, camera.camera.position);
+          
+            direction.y = 0.0f;
+            direction = Vector3Normalize(direction);
+
+            housePosition = (Vector3){
+                camera.camera.position.x + direction.x * 12.0f, 0.0f, camera.camera.position.z + direction.z * 12.0f 
+            };
+
+            houseVisible = true;
+            houseWorldActive = true;
+
+            camera.camera.target = (Vector3){
+                housePosition.x, camera.camera.position.y, housePosition.z
+            };
+
+            startDoorCutscene(&cutscene, &camera);
+            gameState = GAME_STATE_CUTSCENE;
+        }
         updateWeapon(&weapon);
         updateWeaponAnimation(&weapon);
 
@@ -109,8 +157,13 @@ int main(void){
         BeginDrawing();
             ClearBackground((Color){10, 14, 17, 255});
             initCamera(&camera);
-            drawWorld();
-            drawDoor(&door);
+            if(!houseWorldActive){
+                drawWorld();
+                drawDoor(&door);
+            }
+            if(houseVisible){
+                DrawModel(house, housePosition, 1.0f, WHITE);//(Color){150, 135, 115, 255});
+            }
                 drawWeapon(&weapon, camera.camera);
             finishCamera();
                 DrawText(TextFormat("%d / %d", weapon.magazineAmmo, weapon.reserveAmmo), GetScreenWidth() - 120, GetScreenHeight() - 26, 30, RAYWHITE);
@@ -127,6 +180,7 @@ int main(void){
     unloadTerrainShader();
     unloadTerrainTexture();
     unloadMenu();
+    UnloadModel(house);
     unloadDoor(&door);
     CloseWindow();
     return 0;
