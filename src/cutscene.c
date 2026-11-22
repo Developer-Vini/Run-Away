@@ -9,6 +9,50 @@ static float smoothStep(float value){
     return value * value * (3.0f - 2.0f * value);
 }
 
+static bool updateDoorCutscene(Cutscene *cutscene, GameCamera *camera){
+    cutscene->timer += GetFrameTime();
+
+    float time = cutscene->timer;
+    float yaw = 0.0f;
+
+    if(time < 1.5f){
+        yaw = Lerp(0.0f, 0.55f, smoothStep((time - 1.5f))); // 2.0f));
+    }else if(time >= 2.5f){
+        // yaw = Lerp(0.0f, 0.45, smoothStep((time - 4.0f) / 2.0f));
+        yaw = 0.55f;
+    }else if(time >= 4.5f){
+        yaw = Lerp(0.55f, -0.55f, smoothStep((time - 2.5f) / 2.0f));
+    }else if(time >= 5.5f){
+        //yaw = Lerp(0.45f, -0.45f, smoothStep((time - 8.0f) / 2.5f));
+        yaw = -0.55f;
+    }else if(time >= 7.0f){
+        yaw = Lerp(-0.55f, 0.0f, smoothStep((time - 5.5f) / 1.5f));
+    }else{
+        yaw = 0.0f;
+    }
+
+    Vector3 direction = cutscene->fowardDirection;
+
+    float cosYaw = cosf(yaw);
+    float sinYaw = sinf(yaw);
+
+    Vector3 rotateDirection = {
+        direction.x * cosYaw + direction.z * sinYaw, 0.0f, -direction.x * sinYaw + direction.z * cosYaw 
+    };
+
+    camera->camera.position = cutscene->startPosition;
+
+    camera->camera.target = (Vector3){
+        camera->camera.position.x + rotateDirection.x, camera->camera.position.y - 0.05f,  camera->camera.position.z + rotateDirection.z
+    };
+
+    if(time >= 7.0f){
+        cutscene->active = false;
+        return true;
+    }
+    return false;
+}
+
 void startCutscene(Cutscene *cutscene, GameCamera *camera){
     cutscene->timer = 0.0f;
     cutscene->active = true;
@@ -47,6 +91,10 @@ void startCutscene(Cutscene *cutscene, GameCamera *camera){
 
 bool updateCutscene(Cutscene *cutscene, GameCamera *camera){
     if(!cutscene->active) return true;
+
+    if(cutscene->type == CUTSCENE_DOOR_DISCOVERY){
+        return updateDoorCutscene(cutscene, camera);
+    }
     
     cutscene->timer += GetFrameTime();
 
@@ -67,19 +115,19 @@ bool updateCutscene(Cutscene *cutscene, GameCamera *camera){
     // );
 
     float yaw = 0.0f;  //sinf(cutscene->timer * 1.8f) * 0.65;
-
-    if(cutscene->timer >= 2.0f && cutscene->timer < 3.0f){
-        yaw = Lerp(0.0f, 0.45, smoothStep((cutscene->timer - 2.0f))); // 2.0f));
-    }else if(cutscene->timer >= 3.0f && cutscene->timer < 4.0f){
-        // yaw = Lerp(0.0f, 0.45, smoothStep((cutscene->timer - 4.0f) / 2.0f));
+    float time = cutscene->timer;
+    if(time >= 2.0f && time < 3.0f){
+        yaw = Lerp(0.0f, 0.45, smoothStep((time - 2.0f))); // 2.0f));
+    }else if(time >= 3.0f && time < 4.0f){
+        // yaw = Lerp(0.0f, 0.45, smoothStep((time - 4.0f) / 2.0f));
         yaw = 0.45f;
-    }else if(cutscene->timer >= 4.0f && cutscene->timer < 6.0f){
-        yaw = Lerp(0.45f, -0.45f, smoothStep((cutscene->timer - 4.0f) / 2.0f));
-    }else if(cutscene->timer >= 6.0f && cutscene->timer < 7.0f){
-        //yaw = Lerp(0.45f, -0.45f, smoothStep((cutscene->timer - 8.0f) / 2.5f));
+    }else if(time >= 4.0f && time < 6.0f){
+        yaw = Lerp(0.45f, -0.45f, smoothStep((time - 4.0f) / 2.0f));
+    }else if(time >= 6.0f && time < 7.0f){
+        //yaw = Lerp(0.45f, -0.45f, smoothStep((time - 8.0f) / 2.5f));
         yaw = -0.45f;
-    }else if(cutscene->timer >= 7.0f){
-        yaw = Lerp(-0.45f, 0.0f, smoothStep((cutscene->timer - 7.0f) / 3.0f));
+    }else if(time >= 7.0f){
+        yaw = Lerp(-0.45f, 0.0f, smoothStep((time - 7.0f) / 3.0f));
     }
 
     Vector3 direction = cutscene->fowardDirection;
