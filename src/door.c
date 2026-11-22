@@ -22,7 +22,7 @@ void initDoor(Door *door){
     door->isUnlocked = true;
 }
 
-void updateDoor(Door *door, Vector3 playerPosition){
+bool updateDoor(Door *door, Vector3 playerPosition){
     if(getCurrentDimension() != INIT_DIMENSION){
         door->canInteract =  false;
         return;
@@ -35,8 +35,10 @@ void updateDoor(Door *door, Vector3 playerPosition){
     door->canInteract = distance <= door->interactionRadius;
 
     if(door->canInteract && door->isUnlocked && IsKeyPressed(KEY_F) && !isDimensionTras()){
-        changeDimension();
+        return true;
+        //changeDimension();
     }
+    return false;
 }
 
 void drawDoor(Door *door){

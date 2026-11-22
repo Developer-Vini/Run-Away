@@ -19,7 +19,7 @@ typedef struct{
 } Door;
 
 void initDoor(Door *door);
-void updateDoor(Door *door, Vector3 playerPosition);
+bool updateDoor(Door *door, Vector3 playerPosition);
 void drawDoor(Door *door);
 void unloadDoor(Door *door);
 #endif
