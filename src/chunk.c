@@ -13,6 +13,7 @@ static Texture2D terrainTexture;
 
 static Shader terrainShader;
 static int viewPositionLocation;
+static int viewDirectionLocation;
 
 static void addTriangle(Mesh *mesh, int *vertexIndex, Vector3 a, Vector3 b, Vector3 c, float originX, float originZ){
     Vector3 normal = Vector3Normalize(Vector3CrossProduct(Vector3Subtract(b, a), Vector3Subtract(c, a)));
@@ -211,7 +212,7 @@ void loadTerrainShader(void){
     terrainShader = LoadShader("assets/fog.vs", "assets/fog.fs");
     viewPositionLocation = GetShaderLocation(terrainShader, "viewPos");
     terrainShader.locs[SHADER_LOC_MATRIX_MODEL] = GetShaderLocation(terrainShader, "matModel");
-    //viewPositionLocation = GetShaderLocation(terrainShader, "viewPos");
+    viewDirectionLocation = GetShaderLocation(terrainShader, "viewDir");
 
     float fogColor[3] = {
         10.0f / 255.0f, 
@@ -221,10 +222,14 @@ void loadTerrainShader(void){
     float fogStart = FOG_START;
     float fogEnd = FOG_END;
 
+    float coneInner = 0.65f;
+    float coneOuter = 0.05f;
+
     SetShaderValue(terrainShader, GetShaderLocation(terrainShader, "fogColor"), fogColor, SHADER_UNIFORM_VEC3);
     SetShaderValue(terrainShader, GetShaderLocation(terrainShader, "fogStart"), &fogStart, SHADER_UNIFORM_FLOAT);
     SetShaderValue(terrainShader, GetShaderLocation(terrainShader, "fogEnd"), &fogEnd, SHADER_UNIFORM_FLOAT);
-       
+    SetShaderValue(terrainShader, GetShaderLocation(terrainShader, "coneInner"), &coneInner, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(terrainShader, GetShaderLocation(terrainShader, "coneOuter"), &coneOuter, SHADER_UNIFORM_FLOAT);       
 }
 
 void unloadTerrainShader(void){
