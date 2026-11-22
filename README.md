@@ -1,5 +1,11 @@
 # Run-Away
 
+A shooting game developed without an engine.
+
+# Description
+
+You were sleeping and woke up in a world full of elevations where there is only one door in the center; the only solution is for you to enter it, or you will remain in the dimension of nothingness.
+
 ![alt text](assets/images/menu.png)
 ![alt text](assets/images/image.png)
 
@@ -14,10 +20,15 @@
 - Mouse Left = Shoot
 - F1 = Debug Mode Weapon
 
-# How to Play?
+# Getting Started
 
-To play the game, simply go to the releases and download the latest version.
+## Dependencies
 
-After installing the 'RunAway.zip' file, extract it and open the executable; this time everything will work!
+- Windows 10 or later 
+- Linux
+- Mac OS
 
-The only way to test the game is by doing this. I will add a compilation file in the future, but for now, I'm focusing primarily on the game itself.
+## Instaling 
+- To download the program, go to releases and look for the latest version of the project, or go to the itch.io page to download it by clicking [here](https://o-devzin.itch.io/run-away)
+
+# Licence
