@@ -19,6 +19,7 @@ int main(void){
     InitAudioDevice();
     loadTerrainTexture();
     loadTerrainShader();
+    initMenu();
 
     //DisableCursor();
     SetExitKey(KEY_NULL);
@@ -98,6 +99,7 @@ int main(void){
     unloadWorld();
     unloadTerrainShader();
     unloadTerrainTexture();
+    unloadMenu();
     unloadDoor(&door);
     CloseWindow();
     return 0;
