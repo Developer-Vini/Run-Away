@@ -2,7 +2,7 @@
 #include "../include/raymath.h"
 
 #include <math.h>
-#define CUTSCENE_DURATION 4.0f
+#define CUTSCENE_DURATION 10.0f
 
 static float smoothStep(float value){
     value = Clamp(value, 0.0f, 1.0f);
@@ -48,7 +48,7 @@ bool updateCutscene(Cutscene *cutscene, GameCamera *camera){
     
     cutscene->timer += GetFrameTime();
 
-    float progress = cutscene->timer / CUTSCENE_DURATION;
+    float progress = Clamp(cutscene->timer / CUTSCENE_DURATION, 0.0f, 1.0f);
     float animation = smoothStep(progress);
 
 
@@ -60,19 +60,46 @@ bool updateCutscene(Cutscene *cutscene, GameCamera *camera){
 
     camera->camera.position.y = cameraH;
 
-    float lookY = Lerp(
-        gH + 0.38f, gH + 1.60f, animation
-    );
-    camera->camera.target = (Vector3){
-        camera->camera.position.x, lookY,  camera->camera.position.z - 0.85f
+    // float lookY = Lerp(
+    //     gH + 0.38f, gH + 1.60f, animation
+    // );
+
+    float yaw = 0.0f;  //sinf(cutscene->timer * 1.8f) * 0.65;
+
+    if(cutscene->timer >= 2.0f && cutscene->timer < 3.0f){
+        yaw = Lerp(0.0f, 0.45, smoothStep((cutscene->timer - 2.0f))); // 2.0f));
+    }else if(cutscene->timer >= 3.0f && cutscene->timer < 4.0f){
+        // yaw = Lerp(0.0f, 0.45, smoothStep((cutscene->timer - 4.0f) / 2.0f));
+        yaw = 0.45f;
+    }else if(cutscene->timer >= 4.0f && cutscene->timer < 6.0f){
+        yaw = Lerp(0.45f, -0.45f, smoothStep((cutscene->timer - 4.0f) / 2.0f));
+    }else if(cutscene->timer >= 6.0f && cutscene->timer < 7.0f){
+        //yaw = Lerp(0.45f, -0.45f, smoothStep((cutscene->timer - 8.0f) / 2.5f));
+        yaw = -0.45f;
+    }else if(cutscene->timer >= 7.0f){
+        yaw = Lerp(-0.45f, 0.0f, smoothStep((cutscene->timer - 7.0f) / 3.0f));
+    }
+
+    Vector3 direction = cutscene->fowardDirection;
+
+    float cosYaw = cosf(yaw);
+    float sinYaw = sinf(yaw);
+
+    Vector3 rotateDirection = {
+        direction.x * cosYaw + direction.z * sinYaw, 0.0f, -direction.x * sinYaw + direction.z * cosYaw 
     };
 
-    if(cutscene->timer >= CUTSCENE_DURATION){
+    camera->camera.target = (Vector3){
+        camera->camera.position.x + rotateDirection.x, camera->camera.position.y - 0.05f,  camera->camera.position.z + rotateDirection.z
+    };
+
+
+    if(progress >= 1.0f){
         cutscene->active = false;
         camera->camera.position.y = gH +  1.7f;
 
         camera->camera.target = (Vector3){
-            camera->camera.position.x, camera->camera.position.y, camera->camera.position.z - 0.85f
+            camera->camera.position.x + direction.x, camera->camera.position.y, camera->camera.position.z + direction.z
         };
         return true;
     }
