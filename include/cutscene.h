@@ -11,5 +11,6 @@ typedef struct {
 } Cutscene;
 
 void startCutscene(Cutscene *cutscene, GameCamera *camera);
+bool updateCutscene(Cutscene *cutscene, GameCamera *camera);
 
 #endif
