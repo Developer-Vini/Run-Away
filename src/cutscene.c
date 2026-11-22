@@ -57,3 +57,11 @@ bool updateCutscene(Cutscene *cutscene, GameCamera *camera){
     return false;
 
 }
+
+void drawCutscene(Cutscene *cutscene){
+    if(!cutscene->active) return;
+
+    float alpha = 1.0f - Clamp(cutscene->timer / 1.4, 0.0f, 1.0f);
+
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), (Color){0, 0, 0, (unsigned char)(alpha * 255)});
+}
