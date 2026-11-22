@@ -4,7 +4,7 @@
 // #define BUTTON_WIDTH 300.0f
 // #define BUTTON_HEIGHT 60.0f
 // #define BUTTON_SPACING 20.0f
-#define BUTTON_COUNT 2
+#define BUTTON_COUNT 3
 
 static Texture2D menuBackground;
 static bool menuLoaded = false;
@@ -58,11 +58,37 @@ MenuAction updateMenu(void){
     return MENU_ACTION_NONE;
 }
 void drawMenu(void){
-    //ClearBackground((Color){10, 14, 17, 255});
+    
+    int W = GetScreenWidth();
+    int H = GetScreenHeight();
+    
+    ClearBackground(BLACK);
+
+    if(menuLoaded){
+        float imageR = (float)menuBackground.width / menuBackground.height;
+        float scRatio = (float)W / H;
+
+        Rectangle source = {
+            0,0, (float)menuBackground.width, (float)menuBackground.height
+        };
+
+        if(imageR > scRatio){
+            source.width = menuBackground.height * scRatio;
+            source.x = (menuBackground.width - source.width) / 2.0f;
+        }else{
+            source.height = menuBackground.width / scRatio;
+            source.y = (menuBackground.height - source.height) / 2.0f;
+        }
+        DrawTexturePro(menuBackground, source, (Rectangle){0, 0, (float)W, (float)H}, (Vector2){0, 0}, 0.0f, WHITE);
+    }
 
     const char *title = "Run Away";
     int titleSize = 64;
-    DrawText(title, (GetScreenWidth() - MeasureText(title, titleSize)) / 2, GetScreenHeight() / 4, titleSize, RAYWHITE);
+
+    float tX = W * 0.09f;
+    float tY = H * 0.29f; 
+
+    DrawText(title, tX, tY, titleSize, WHITE);
 
     Vector2 mouse = GetMousePosition();
 
@@ -71,11 +97,9 @@ void drawMenu(void){
 
         bool isHovered = CheckCollisionPointRec(mouse, button);
 
-        Color fill = isHovered ? (Color){90, 20, 20, 255} : (Color){35, 38, 42, 255};
-        DrawRectangleRec(button, fill);
-        DrawRectangleLinesEx(button, 2.0f, GRAY);
-        
-        int textSize = 30;
-        DrawText(buttonLabels[i], (int)(button.x + (BUTTON_WIDTH - MeasureText(buttonLabels[i], textSize)) / 2), (int)(button.y + (BUTTON_HEIGHT - textSize) / 2), textSize, RAYWHITE);
+        Color fill = isHovered ? (Color){90, 20, 20, 255} : WHITE;
+
+        int textSize = 32;
+        DrawText(buttonLabels[i], (int)button.x, (int)button.y, textSize, fill);
     }
 }
