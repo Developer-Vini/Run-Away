@@ -31,4 +31,10 @@ You were sleeping and woke up in a world full of elevations where there is only 
 ## Instaling 
 - To download the program, go to releases and look for the latest version of the project, or go to the itch.io page to download it by clicking [here](https://o-devzin.itch.io/run-away)
 
+# Technologies used
+
+- C
+- Raylib
+
+
 # Licence
