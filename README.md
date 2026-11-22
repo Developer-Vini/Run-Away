@@ -38,3 +38,4 @@ You were sleeping and woke up in a world full of elevations where there is only 
 
 
 # Licence
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details
