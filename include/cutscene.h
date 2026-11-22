@@ -3,11 +3,13 @@
 
 #include "raylib.h"
 #include "camera.h"
+#include "chunk.h"
 
 typedef struct {
     float timer;
     bool active;
     Vector3 startPosition;
+    Vector3 fowardDirection;
 } Cutscene;
 
 void startCutscene(Cutscene *cutscene, GameCamera *camera);

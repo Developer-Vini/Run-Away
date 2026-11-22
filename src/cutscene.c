@@ -1,6 +1,7 @@
 #include "../include/cutscene.h"
 #include "../include/raymath.h"
-#include "../include/chunk.h"
+
+#include <math.h>
 #define CUTSCENE_DURATION 4.0f
 
 static float smoothStep(float value){
@@ -9,20 +10,37 @@ static float smoothStep(float value){
 }
 
 void startCutscene(Cutscene *cutscene, GameCamera *camera){
-    float gH = getTerrainH(0.0f, 5.0f);
-
     cutscene->timer = 0.0f;
     cutscene->active = true;
 
-    cutscene->startPosition = (Vector3){
-        0.0f, gH + 0.65f, 5.0f
-    };
+    Vector3 direction = Vector3Subtract(camera->camera.target, camera->camera.position);
+    direction.y = 0.0f;
+
+    float lenght = sqrtf(direction.x * direction.x + direction.z * direction.z);
+
+    if(lenght > 0.001f){
+        direction.x /= lenght;
+        direction.z /= lenght;
+    }else{
+        direction = (Vector3){0.0f, 0.0f, -1.0f};
+    }
+    // cutscene->startPosition = (Vector3){
+    //     0.0f, gH + 0.65f, 5.0f
+    // };
+
+    cutscene->fowardDirection = direction;
+
+    float gH = getTerrainH(camera->camera.position.x, camera->camera.position.z);
+
+
+    cutscene->startPosition = camera->camera.position;
+    cutscene->startPosition.y = gH + 0.65f;
 
     camera->camera.position = cutscene->startPosition;
     
-    camera->camera.target = (Vector3){
-        0.0f, -0.35f, camera->camera.position.z - 0.85f
-    };
+    // camera->camera.target = (Vector3){
+    //     0.0f, -0.35f, camera->camera.position.z - 0.85f
+    // };
 }
 
 bool updateCutscene(Cutscene *cutscene, GameCamera *camera){
