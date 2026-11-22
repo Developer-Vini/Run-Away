@@ -152,7 +152,7 @@ float getTerrainH(float worldX, float worldZ){
         return 0.0f;
     }
 
-    getHillsH(worldX, worldZ);
+    return getHillsH(worldX, worldZ);
 
 }
 float getHillsH(float worldX, float worldZ){
@@ -236,11 +236,17 @@ void unloadTerrainShader(void){
     UnloadShader(terrainShader);
 }
 
-void updateTerrainShader(Vector3 cameraPosition){
+void updateTerrainShader(Vector3 cameraPosition, Vector3 cameraTarget){
+    Vector3 direction = Vector3Normalize(Vector3Subtract(cameraTarget, cameraPosition));
+
     float position[3] = {
         cameraPosition.x, cameraPosition.y, cameraPosition.z
     };
+    float viewDirection[3] = {
+        direction.x, direction.y, direction.z
+    };
     SetShaderValue(terrainShader, viewPositionLocation, position, SHADER_UNIFORM_VEC3);
+    SetShaderValue(terrainShader, viewDirectionLocation, viewDirection, SHADER_UNIFORM_VEC3);
 }
 
 Shader getTerrainShader(void){

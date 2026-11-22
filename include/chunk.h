@@ -29,7 +29,7 @@ void unloadTerrainTexture(void);
 
 void loadTerrainShader(void);
 void unloadTerrainShader(void);
-void updateTerrainShader(Vector3 cameraPosition);
+void updateTerrainShader(Vector3 cameraPosition, Vector3 cameraTarget);
 float getHillsH(float worldX, float worldZ);
 
 Shader getTerrainShader(void);

@@ -35,16 +35,16 @@ int main(void){
     bool houseVisible = false;
     bool houseWorldActive = false;
 
-    printf("Mes: %d\n", house.meshCount);
-    printf("mate: %d\n", house.materialCount);
+    // printf("Mes: %d\n", house.meshCount);
+    // printf("mate: %d\n", house.materialCount);
 
-    int textureM = 0;
-    for(int i = 0; i< house.materialCount; i++){
-        if(house.materials[i].maps[MATERIAL_MAP_DIFFUSE].texture.id > 0){
-            textureM++;
-        }
-        //printf("material %d Texture id: %u cor: r=%d cor: g=%d cor: b=%d cor: a=%d\n", i, map.texture.id, map.color.r, map.color.g, map.color.b, map.color.a);
-    }
+    // int textureM = 0;
+    // for(int i = 0; i< house.materialCount; i++){
+    //     if(house.materials[i].maps[MATERIAL_MAP_DIFFUSE].texture.id > 0){
+    //         textureM++;
+    //     }
+    //     //printf("material %d Texture id: %u cor: r=%d cor: g=%d cor: b=%d cor: a=%d\n", i, map.texture.id, map.color.r, map.color.g, map.color.b, map.color.a);
+    // }
 
     GameCamera camera;
     Weapon weapon = createWeapon();
@@ -86,7 +86,7 @@ int main(void){
 
             if(!houseVisible){                
                 updateWorld(camera.camera.position);
-                updateTerrainShader(camera.camera.position);
+                updateTerrainShader(camera.camera.position, camera.camera.target);
             }
             BeginDrawing();
                 ClearBackground((Color){10, 14, 17, 255});
@@ -125,7 +125,7 @@ int main(void){
         }
         if(!houseWorldActive){
             updateWorld(camera.camera.position);
-            updateTerrainShader(camera.camera.position);
+            updateTerrainShader(camera.camera.position, camera.camera.target);
         }
             
         if(!houseWorldActive && updateDoor(&door, camera.camera.position)){

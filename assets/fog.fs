@@ -18,20 +18,28 @@ out vec4 finalColor;
 void main(){
     vec4 color = texture(texture0, fragTexCoord) * colDiffuse * fragColor;
 
-    // float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
-    // color.rgb = mix(vec3(gray), color.rgb, 0.25);
-
     float distanceToCamera = length(fragWorldPos - viewPos);
     float cal = clamp((distanceToCamera - fogStart) / (fogEnd - fogStart), 0.0, 1.0);
     float fogAmount = cal * cal * (3.0 - 2.0 * cal);
 
-    vec3 toFragment= normalize(fragWorldPos - viewPos);
-    vec3 direction = normalize(viewDir);
+    vec2 toFragment= fragWorldPos.xz - viewPos.xz;
+    vec2 direction = viewDir.xz;
 
-    float facing = dot(toFragment);
+    float fragmentL = length(toFragment);
+    float directionL = length(direction);
+
+    float facing = 1.0;
+
+    if(fragmentL > 0.001 && directionL > 0.001){
+        toFragment = normalize(toFragment);
+        direction = normalize(direction);
+        facing = dot(toFragment, direction);
+    }
+
     float visibity = smoothstep(coneOuter, coneInner, facing);
-    float directionDark = 1.0 - visibity;
-    float dark = max(cal, directionDark * 0.96);
+    float directionDark = (1.0 - visibity) * 0.96;
 
-    finalColor = vec4(mix(color.rgb, fogColor, dark), color.a);
+    float darkness = max(fogAmount, directionDark);
+
+    finalColor = vec4(mix(color.rgb, fogColor, darkness), color.a);
 }
