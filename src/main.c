@@ -9,6 +9,7 @@
 #include "../include/cutscene.h"
 #include "../include/raymath.h"
 #include "../include/darkness.h"
+#include "../include/floor.h"
 #include <stdio.h>
 typedef enum {
     GAME_STATE_MENU,
@@ -19,7 +20,6 @@ typedef enum {
 int main(void){
 
     InitWindow( 1280, 720, "Run Away");
-
     InitAudioDevice();
     loadTerrainTexture();
     loadTerrainShader();
@@ -31,6 +31,7 @@ int main(void){
 
     Door door = {0};
 
+    static Floor houseFloor;
     Model house = LoadModel("assets/3Dmodels/free_abandoned_apartment.glb");
     Vector3 housePosition = {0.0f, 0.0f, -15.0f};
     bool houseVisible = false;
@@ -53,6 +54,7 @@ int main(void){
     createCamera(&camera, (Vector3){0.0f, 1.7f, 5.0f}, (Vector3){0.0f, 1.7f, 0.0f});
     initDoor(&door);
 
+    
     Cutscene cutscene = {0};
 
     //setDimension(INFECTED_DIMENSION);
@@ -100,6 +102,9 @@ int main(void){
                     if(houseVisible){
                         DrawModel(house, housePosition, 1.0f, WHITE);
                     }
+                    if(houseWorldActive){
+                        drawFloor(houseFloor);
+                    }
                 finishCamera();
 
                 if(houseWorldActive){
@@ -142,6 +147,9 @@ int main(void){
             housePosition = (Vector3){
                 camera.camera.position.x + direction.x * 12.0f, 0.0f, camera.camera.position.z + direction.z * 12.0f 
             };
+            
+            houseFloor = createFloor(housePosition.x, housePosition.y - 0.1f, housePosition.z, 30.0f, 30.0f, BLACK);
+
 
             houseVisible = true;
             houseWorldActive = true;
@@ -168,6 +176,9 @@ int main(void){
             }
             if(houseVisible){
                 DrawModel(house, housePosition, 1.0f, WHITE);//(Color){150, 135, 115, 255});
+            }
+            if(houseWorldActive){
+                drawFloor(houseFloor);
             }
                 drawWeapon(&weapon, camera.camera);
             finishCamera();
