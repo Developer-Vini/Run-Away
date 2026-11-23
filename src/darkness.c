@@ -20,3 +20,7 @@ void initDarkness(void){
     softnessLoc = GetShaderLocation(darknessShader, "softness");
     timeLoc = GetShaderLocation(darknessShader, "time");
 }
+
+void unloadDarkness(void){
+    UnloadShader(darknessShader);
+}
