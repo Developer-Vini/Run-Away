@@ -1,6 +1,5 @@
 #version 330
 
-in vec2 fragTexCoord;
 out vec4 finalColor;
 
 uniform vec2 resolution;
@@ -10,7 +9,7 @@ uniform float softness;
 uniform float time;
 
 void main(){
-    vec2 uv = fragTexCoord;
+    vec2 uv = gl_FragCoord.xy / resolution;
     vec2 aspect = vec2(resolution.x / resolution.y, 1.0);
     vec2 p = (uv - center) * aspect;
     float angle = atan(p.y, p.x);

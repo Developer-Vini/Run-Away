@@ -8,6 +8,7 @@
 #include "../include/menu.h"
 #include "../include/cutscene.h"
 #include "../include/raymath.h"
+#include "../include/darkness.h"
 #include <stdio.h>
 typedef enum {
     GAME_STATE_MENU,
@@ -23,7 +24,7 @@ int main(void){
     loadTerrainTexture();
     loadTerrainShader();
     initMenu();
-
+    initDarkness();
     //DisableCursor();
     SetExitKey(KEY_NULL);
     SetTargetFPS(60);
@@ -100,6 +101,10 @@ int main(void){
                         DrawModel(house, housePosition, 1.0f, WHITE);
                     }
                 finishCamera();
+
+                if(houseWorldActive){
+                    drawDarkness();
+                }
                 
                 drawCutscene(&cutscene);
             EndDrawing();
@@ -166,6 +171,9 @@ int main(void){
             }
                 drawWeapon(&weapon, camera.camera);
             finishCamera();
+                if(houseWorldActive){
+                    drawDarkness();
+                }
                 DrawText(TextFormat("%d / %d", weapon.magazineAmmo, weapon.reserveAmmo), GetScreenWidth() - 120, GetScreenHeight() - 26, 30, RAYWHITE);
                 DrawFPS(10,10);
                 if(door.canInteract){
@@ -179,6 +187,7 @@ int main(void){
     unloadWorld();
     unloadTerrainShader();
     unloadTerrainTexture();
+    unloadDarkness();
     unloadMenu();
     UnloadModel(house);
     unloadDoor(&door);
