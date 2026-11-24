@@ -10,12 +10,53 @@
 #include "../include/raymath.h"
 #include "../include/darkness.h"
 #include "../include/floor.h"
+#include "../include/houseW.h"
 #include <stdio.h>
+
 typedef enum {
     GAME_STATE_MENU,
     GAME_STATE_CUTSCENE,
     GAME_STATE_PLAIYING
 }GameState;
+
+static void keepPlayerOutWalls(GameCamera *gameCarema){
+    float x = gameCarema->camera.position.x;
+    float z = gameCarema->camera.position.z;
+    float oldX = x;
+    float oldZ = z;
+
+    for(int i = 0; i <HOUSE_WALL_COUNT; i++){
+        HouseWall wall = HouseWalls[i];
+
+        float minX = fminf(wall.x1, wall.x2) - 0.5f;
+        float maxX = fmaxf(wall.x1, wall.x2) + 0.5f;
+        float minZ = fminf(wall.z1, wall.z2) - 0.5f;
+        float maxZ = fmaxf(wall.z1, wall.z2) + 0.5f;
+
+        if(x > minX && x < maxX && z > minX && z < maxX ){
+            float toMinX = x - minX;
+            float toMaxX = maxX - x;
+            float toMinZ = z -minZ;
+            float toMaxZ = maxZ - z;
+            float closest = fminf(fminf(toMinX, toMaxX), fminf(toMinZ, toMaxZ));
+
+            if(closest == toMinX){
+                x = minX;
+            }else if(closest == toMaxX){
+                x = maxX;
+            }else if(closest == toMinZ){
+                z = minZ;
+            }else{
+                z = maxZ;
+            }
+        }
+    }
+
+    gameCarema->camera.position.x = x;
+    gameCarema->camera.position.z = z;
+    gameCarema->camera.target.x += x - oldX;
+    gameCarema->camera.target.z += z - oldZ;
+}
 
 int main(void){
 
@@ -126,6 +167,9 @@ int main(void){
         }
 
         updateCamera(&camera);
+        if(houseWorldActive){
+            keepPlayerOutWalls(&camera);
+        }
 
         if(houseWorldActive && !weapon.hasWeapon){
             float distance = Vector3Distance(camera.camera.position, weaponPickUpPosition);
@@ -152,23 +196,25 @@ int main(void){
         }
             
         if(!houseWorldActive && updateDoor(&door, camera.camera.position)){
-            Vector3 direction = Vector3Subtract(camera.camera.target, camera.camera.position);
+            //Vector3 direction = Vector3Subtract(camera.camera.target, camera.camera.position);
           
-            direction.y = 0.0f;
-            direction = Vector3Normalize(direction);
+            //direction.y = 0.0f;
+            // direction = Vector3Normalize(direction);
 
             housePosition = (Vector3){
-                camera.camera.position.x + direction.x * 12.0f, 0.0f, camera.camera.position.z + direction.z * 12.0f 
+               0.0f,0.0f,0.0f //camera.camera.position.x + direction.x * 12.0f, 0.0f, camera.camera.position.z + direction.z * 12.0f 
             };
             
-            houseFloor = createFloor(housePosition.x, housePosition.y - 0.1f, housePosition.z, 30.0f, 30.0f, BLACK);
-
+            houseFloor = createFloor(housePosition.x, housePosition.y - 0.1f, housePosition.z, 70.0f, 70.0f, BLACK);
 
             houseVisible = true;
             houseWorldActive = true;
 
+            camera.camera.position = (Vector3){
+                -12.0f, 1.7f, -7.0f
+            };
             camera.camera.target = (Vector3){
-                housePosition.x, camera.camera.position.y, housePosition.z
+                -11.0f, 1.7f, -7.0f
             };
 
             startDoorCutscene(&cutscene, &camera);
