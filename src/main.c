@@ -33,7 +33,7 @@ static void keepPlayerOutWalls(GameCamera *gameCarema){
         float minZ = fminf(wall.z1, wall.z2) - 0.5f;
         float maxZ = fmaxf(wall.z1, wall.z2) + 0.5f;
 
-        if(x > minX && x < maxX && z > minX && z < maxX ){
+        if(x > minX && x < maxX && z > minZ && z < maxZ ){
             float toMinX = x - minX;
             float toMaxX = maxX - x;
             float toMinZ = z -minZ;
