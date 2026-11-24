@@ -309,7 +309,9 @@ void drawWeaponPickUp(Weapon *weapon, Vector3 position, Camera3D camera){
 
     Matrix rotationMatrix = MatrixRotateXYZ(rotation);
 
-    Matrix scaleMatrix = MatrixScale(weapon->scale, weapon->scale, weapon->scale);
+    float pickUpScale = 0.05f;
+
+    Matrix scaleMatrix = MatrixScale(pickUpScale, pickUpScale, pickUpScale);
     Matrix translationMatrix = MatrixTranslate(position.x, position.y, position.z);
     Matrix transform = MatrixMultiply(rotationMatrix, MatrixMultiply(scaleMatrix, translationMatrix));
 
