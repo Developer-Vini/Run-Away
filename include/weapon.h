@@ -35,6 +35,7 @@ void drawWeapon(Weapon *weapon, Camera3D camera);
 void unloadWeapon(Weapon *weapon);
 void updateWeaponAnimation(Weapon *weapon);
 void pickUpWeapon(Weapon *weapon);
+void drawWeaponPickUp(Weapon *weapon, Vector3 position, Camera3D camera);
 bool updateWeaponFiring(Weapon *weapon);
 
 #endif

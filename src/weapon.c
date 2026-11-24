@@ -298,6 +298,37 @@ bool updateWeaponFiring(Weapon *weapon){
     return true;
 }
 
+void drawWeaponPickUp(Weapon *weapon, Vector3 position, Camera3D camera){
+    if(weapon->hasWeapon) return;
+
+    Vector3 rotation = {
+        weapon->correctionAngles.x * DEG2RAD,
+        weapon->correctionAngles.y * DEG2RAD,
+        weapon->correctionAngles.z * DEG2RAD
+    };
+
+    Matrix rotationMatrix = MatrixRotateXYZ(rotation);
+
+    Matrix scaleMatrix = MatrixScale(weapon->scale, weapon->scale, weapon->scale);
+    Matrix translationMatrix = MatrixTranslate(position.x, position.y, position.z);
+    Matrix transform = MatrixMultiply(rotationMatrix, MatrixMultiply(scaleMatrix, translationMatrix));
+
+    float cameraPosition[3] = {
+        camera.position.x, camera.position.y, camera.position.z
+    };
+
+    SetShaderValue(weapon->shader, weapon->vPositionLocation, cameraPosition, SHADER_ATTRIB_VEC3);
+
+    for(int i = 0; i < weapon->model.meshCount; i++){
+        if(i == weapon->armsMeshI) continue;
+
+        Material material = weapon->model.materials[weapon->model.meshMaterial[i]];
+
+        DrawMesh(weapon->model.meshes[i], material, transform);
+    }
+
+}
+
 void pickUpWeapon(Weapon *weapon){
     weapon->hasWeapon = true;
     weapon->magazineAmmo = MAGAZINE_SIZE;
