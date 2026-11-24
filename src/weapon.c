@@ -2,7 +2,7 @@
 #include "../include/raymath.h"
 
 #include <stddef.h>
-
+#include <stdio.h>
 
 #define ANIMATION_IDLE 0
 #define ANIMATION_WALK 1
@@ -51,21 +51,23 @@ Weapon createWeapon(void){
 
     weapon.animations = LoadModelAnimations("assets/3Dmodels/fps_animations_vsk.glb", &weapon.animationsCount);
 
-    for(int i = 0; i < weapon.animationsCount; i++){
-        if(!IsModelAnimationValid(weapon.model, weapon.animations[i])){
+    // for(int i = 0; i < weapon.animationsCount; i++){
+    //     if(!IsModelAnimationValid(weapon.model, weapon.animations[i])){
 
-            TraceLog(LOG_WARNING, "anmicacao %d (%s) nao combina com o modelo", i, weapon.animations[i].name);
-        }
-    }
+    //         TraceLog(LOG_WARNING, "anmicacao %d (%s) nao combina com o modelo", i, weapon.animations[i].name);
+    //     }
+    // }
 
     weapon.armsMeshI = 0;
     for(int i = 0; i < weapon.model.meshCount; i++){
-        TraceLog(LOG_INFO, "malha %d: %d vertices", i, weapon.model.meshes[i].vertexCount);
+        //TraceLog(LOG_INFO, "malha %d: %d vertices", i, weapon.model.meshes[i].vertexCount);
 
         if(weapon.model.meshes[i].vertexCount > weapon.model.meshes[weapon.armsMeshI].vertexCount){
             weapon.armsMeshI = i;
         }
     }
+
+    weapon.hasWeapon = false;
 
     weapon.shader = LoadShader("assets/weapon.vs", "assets/weapon.fs");
     weapon.vPositionLocation = GetShaderLocation(weapon.shader, "viewPos");
@@ -74,9 +76,9 @@ Weapon createWeapon(void){
         weapon.model.materials[i].shader = weapon.shader;
     }
 
-    TraceLog(LOG_INFO, "animacoes carregadas: %d", weapon.animationsCount);
+    //TraceLog(LOG_INFO, "animacoes carregadas: %d", weapon.animationsCount);
 
-    TraceLog(LOG_INFO, "marma: meshes=%d materials=%d", weapon.model.meshCount, weapon.model.materials);
+    //TraceLog(LOG_INFO, "marma: meshes=%d materials=%d", weapon.model.meshCount, weapon.model.materials);
 
     weapon.offsetFromCamera = (Vector3){
         0.053f, -0.260f, 0.287f
@@ -87,8 +89,8 @@ Weapon createWeapon(void){
     weapon.scale = 0.0045f;
 
 
-    weapon.magazineAmmo = MAGAZINE_SIZE;
-    weapon.reserveAmmo = STARTING_RESERVE_AMMO;
+    //weapon.magazineAmmo = MAGAZINE_SIZE;
+    //weapon.reserveAmmo = STARTING_RESERVE_AMMO;
     weapon.shotSound = LoadSound("assets/sounds/tiro.mp3");
     weapon.emptySound = LoadSound("assets/sounds/sound.wav");
     weapon.rechargeSound = LoadSound("assets/sounds/re.mp3");
@@ -97,7 +99,7 @@ Weapon createWeapon(void){
 }
 
 void updateWeapon(Weapon *weapon){
-
+    if(!weapon->hasWeapon) return; //false;
     static bool isAdjustOn = false;
 
     if(IsKeyPressed(KEY_F1)){
@@ -155,6 +157,7 @@ void updateWeapon(Weapon *weapon){
 }
 
 void drawWeapon(Weapon *weapon, Camera3D camera){
+    if(!weapon->hasWeapon) return;
     Vector3 foward = Vector3Normalize(Vector3Subtract(camera.target, camera.position));
     Vector3 right = Vector3Normalize(Vector3CrossProduct(foward, camera.up));
     Vector3 up = Vector3CrossProduct(right, foward);
@@ -218,6 +221,7 @@ void unloadWeapon(Weapon *weapon){
 
 
 void updateWeaponAnimation(Weapon *weapon){
+    if(!weapon->hasWeapon) return;
     if(weapon->animationsCount == 0) return;
 
     //bool isBusy = weapon->currentAnimation == ANIMATION_FIRE || weapon->currentAnimation == ANIMATION_RELOAD;
@@ -259,6 +263,7 @@ void updateWeaponAnimation(Weapon *weapon){
 }
 
 bool updateWeaponFiring(Weapon *weapon){
+    if(!weapon->hasWeapon) return false;
     if(weapon->fireColdown > 0.0f){
         weapon->fireColdown -= GetFrameTime();
     }
@@ -291,4 +296,12 @@ bool updateWeaponFiring(Weapon *weapon){
     playAnimation(weapon, ANIMATION_FIRE);
     playSound(weapon->shotSound);
     return true;
+}
+
+void pickUpWeapon(Weapon *weapon){
+    weapon->hasWeapon = true;
+    weapon->magazineAmmo = MAGAZINE_SIZE;
+    weapon->currentAnimation = ANIMATION_IDLE;
+    weapon->reserveAmmo = STARTING_RESERVE_AMMO;
+    weapon->currentFrame = 0.0f;
 }

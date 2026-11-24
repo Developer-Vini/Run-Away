@@ -185,7 +185,9 @@ int main(void){
                 if(houseWorldActive){
                     drawDarkness();
                 }
-                DrawText(TextFormat("%d / %d", weapon.magazineAmmo, weapon.reserveAmmo), GetScreenWidth() - 120, GetScreenHeight() - 26, 30, RAYWHITE);
+                if(weapon.hasWeapon){
+                    DrawText(TextFormat("%d / %d", weapon.magazineAmmo, weapon.reserveAmmo), GetScreenWidth() - 120, GetScreenHeight() - 26, 30, RAYWHITE);
+                }
                 DrawFPS(10,10);
                 if(door.canInteract){
                     DrawText(door.isUnlocked ? "[F] Open" : "Locked", 20, 60, 23, YELLOW);

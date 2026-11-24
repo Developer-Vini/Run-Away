@@ -18,6 +18,7 @@ typedef struct {
     Shader shader;
     int vPositionLocation;
 
+    bool hasWeapon;
 
     int magazineAmmo;
     int reserveAmmo;
@@ -33,7 +34,7 @@ void updateWeapon(Weapon *weapon);
 void drawWeapon(Weapon *weapon, Camera3D camera);
 void unloadWeapon(Weapon *weapon);
 void updateWeaponAnimation(Weapon *weapon);
-
+void pickUpWeapon(Weapon *weapon);
 bool updateWeaponFiring(Weapon *weapon);
 
 #endif
