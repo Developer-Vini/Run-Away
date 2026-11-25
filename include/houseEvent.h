@@ -23,6 +23,6 @@ typedef struct {
 } HouseEvent;
 
 void startHouseEvent(HouseEvent *event, GameCamera *camera);
-
+void updateeHouseEvent(HouseEvent *event, GameCamera *camera);
 
 #endif
