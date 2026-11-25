@@ -75,7 +75,7 @@ int main(void){
     static Floor houseFloor;
     Model house = LoadModel("assets/3Dmodels/free_abandoned_apartment.glb");
     Vector3 housePosition = {0.0f, 0.0f, -15.0f};
-    Vector3 weaponPickUpPosition = {0};
+    Vector3 weaponPickUpPosition = {4.0f, 0.2f, -3.0f};
     bool houseVisible = false;
     bool houseWorldActive = false;
 
@@ -238,6 +238,9 @@ int main(void){
             }
             if(houseWorldActive){
                 drawFloor(houseFloor);
+                if(!weapon.hasWeapon){
+                    drawWeaponPickUp(&weapon, weaponPickUpPosition, camera.camera);
+                }
             }
                 drawWeapon(&weapon, camera.camera);
             finishCamera();
@@ -245,7 +248,7 @@ int main(void){
             if(houseWorldActive && !weapon.hasWeapon){
                 float distance = Vector3Distance(camera.camera.position, weaponPickUpPosition);
             
-                if(distance <= 2.0f && IsKeyPressed(KEY_F)){
+                if(distance <= 2.0f){
                     DrawText("[F] Get weapon", GetScreenWidth() / 2 - 100, GetScreenHeight() - 100, 25, RAYWHITE);
                     //pickUpWeapon(&weapon);
                 }
