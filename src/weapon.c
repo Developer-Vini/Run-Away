@@ -319,7 +319,7 @@ void drawWeaponPickUp(Weapon *weapon, Vector3 position, Camera3D camera){
         camera.position.x, camera.position.y, camera.position.z
     };
 
-    SetShaderValue(weapon->shader, weapon->vPositionLocation, cameraPosition, SHADER_ATTRIB_VEC3);
+    SetShaderValue(weapon->shader, weapon->vPositionLocation, cameraPosition, SHADER_UNIFORM_VEC3);
 
     for(int i = 0; i < weapon->model.meshCount; i++){
         if(i == weapon->armsMeshI) continue;
