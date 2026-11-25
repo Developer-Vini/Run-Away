@@ -15,6 +15,7 @@ typedef enum{
 
 typedef struct {
     HouseEventState state;
+    float timer;
     /* data */
 } HouseEvent;
 
