@@ -1,6 +1,8 @@
 #ifndef HOUSE_EVENT_H
 #define HOUSE_EVENT_H
 
+#include "camera.h"
+
 typedef enum{
     HOUSE_EVENT_IDLE,
     HOUSE_EVENT_EPLORING,
@@ -16,7 +18,7 @@ typedef struct {
     /* data */
 } HouseEvent;
 
-void startHouseEvent(HouseEvent *event);
+void startHouseEvent(HouseEvent *event, GameCamera *camera);
 
 
 #endif
