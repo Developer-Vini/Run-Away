@@ -27,3 +27,4 @@ void startHouseEvent(HouseEvent *event, GameCamera *camera){
     event->originalPosition = camera->camera.position;
     event->origianlTarget = camera->camera.target;
 }
+
