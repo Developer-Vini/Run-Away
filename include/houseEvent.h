@@ -1,6 +1,7 @@
 #ifndef HOUSE_EVENT_H
 #define HOUSE_EVENT_H
 
+#include "raylib.h"
 #include "camera.h"
 
 typedef enum{
@@ -16,6 +17,8 @@ typedef enum{
 typedef struct {
     HouseEventState state;
     float timer;
+    Vector3 originalPosition;
+    Vector3 origianlTarget;
     /* data */
 } HouseEvent;
 
